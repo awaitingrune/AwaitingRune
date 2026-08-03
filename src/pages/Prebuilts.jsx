@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { CATEGORIES } from '../data/parts.js'
 import { PREBUILTS, PREBUILT_CATEGORIES, resolveBuild } from '../data/prebuilts.js'
 import { evaluateBuild } from '../utils/compatibility.js'
+import { startCheckout } from '../utils/checkout.js'
 import PCTower from '../components/PCTower.jsx'
 import './Prebuilts.css'
 
@@ -15,6 +16,8 @@ const SORTS = [
 export default function Prebuilts() {
   const [category, setCategory] = useState('all')
   const [sort, setSort] = useState('default')
+  const [buyState, setBuyState] = useState({}) // presetId -> 'loading' | 'error'
+  const [buyError, setBuyError] = useState({}) // presetId -> message
 
   const rigs = useMemo(() => {
     const withEvaluation = PREBUILTS.map((preset) => {
@@ -33,6 +36,21 @@ export default function Prebuilts() {
     }
     return filtered
   }, [category, sort])
+
+  async function handleBuyNow(preset) {
+    setBuyState((prev) => ({ ...prev, [preset.id]: 'loading' }))
+    setBuyError((prev) => ({ ...prev, [preset.id]: null }))
+    try {
+      await startCheckout({
+        selections: preset.partIds,
+        buildName: preset.name,
+        cancelPath: '/prebuilts',
+      })
+    } catch (err) {
+      setBuyState((prev) => ({ ...prev, [preset.id]: 'error' }))
+      setBuyError((prev) => ({ ...prev, [preset.id]: err.message }))
+    }
+  }
 
   return (
     <div className="prebuilts container">
@@ -96,11 +114,25 @@ export default function Prebuilts() {
                 })}
               </ul>
 
+              {buyState[preset.id] === 'error' && buyError[preset.id] && (
+                <div className="issue issue--error prebuilt__error">{buyError[preset.id]}</div>
+              )}
+
               <div className="prebuilt__foot">
                 <span className="prebuilt__price">${evaluation.subtotal.toLocaleString()}</span>
-                <Link to="/custom-build" state={{ presetIds: preset.partIds }} className="btn btn-primary">
-                  Customize
-                </Link>
+                <div className="prebuilt__actions">
+                  <Link to="/custom-build" state={{ presetIds: preset.partIds }} className="btn">
+                    Customize
+                  </Link>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    disabled={buyState[preset.id] === 'loading'}
+                    onClick={() => handleBuyNow(preset)}
+                  >
+                    {buyState[preset.id] === 'loading' ? 'Redirecting…' : 'Buy Now'}
+                  </button>
+                </div>
               </div>
             </div>
           ))}

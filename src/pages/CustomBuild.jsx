@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { CATEGORIES, PARTS, findPart } from '../data/parts.js'
 import { evaluateBuild } from '../utils/compatibility.js'
+import { startCheckout } from '../utils/checkout.js'
 import './CustomBuild.css'
 
 function specLine(key, part) {
@@ -62,6 +63,8 @@ export default function CustomBuild() {
   const [selectedIds, setSelectedIds] = useState(() =>
     presetIds ? { ...EMPTY_SELECTION, ...presetIds } : EMPTY_SELECTION
   )
+  const [checkoutState, setCheckoutState] = useState('idle') // idle | loading | error
+  const [checkoutError, setCheckoutError] = useState(null)
 
   const build = useMemo(
     () => Object.fromEntries(CATEGORIES.map((c) => [c.key, findPart(c.key, selectedIds[c.key])])),
@@ -76,6 +79,23 @@ export default function CustomBuild() {
 
   function handleReset() {
     setSelectedIds(EMPTY_SELECTION)
+    setCheckoutState('idle')
+    setCheckoutError(null)
+  }
+
+  async function handleCheckout() {
+    setCheckoutState('loading')
+    setCheckoutError(null)
+    try {
+      await startCheckout({
+        selections: selectedIds,
+        buildName: 'Custom Build',
+        cancelPath: '/custom-build',
+      })
+    } catch (err) {
+      setCheckoutState('error')
+      setCheckoutError(err.message)
+    }
   }
 
   return (
@@ -165,19 +185,22 @@ export default function CustomBuild() {
                 : `${evaluation.errorCount} compatibility issue(s) to resolve.`}
           </div>
 
+          {checkoutState === 'error' && checkoutError && (
+            <div className="issue issue--error">{checkoutError}</div>
+          )}
+
           <button
             type="button"
             className="btn btn-primary btn-block"
-            disabled={!evaluation.isComplete || !evaluation.isCompatible}
+            disabled={!evaluation.isComplete || !evaluation.isCompatible || checkoutState === 'loading'}
+            onClick={handleCheckout}
           >
-            Request This Build
+            {checkoutState === 'loading' ? 'Redirecting to checkout…' : 'Proceed to Checkout'}
           </button>
           <button type="button" className="btn btn-block build-summary__reset" onClick={handleReset}>
             Reset
           </button>
-          <p className="build-summary__note">
-            Demo build tool — connect this to checkout/inventory before taking real orders.
-          </p>
+          <p className="build-summary__note">Secure checkout via Stripe — test mode, no real charge.</p>
         </aside>
       </div>
     </div>

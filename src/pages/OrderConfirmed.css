@@ -1,0 +1,33 @@
+.order-confirmed {
+  padding: 90px 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.order-confirmed__panel {
+  max-width: 560px;
+  padding: 48px;
+  text-align: center;
+}
+
+.order-confirmed__panel h1 {
+  margin: 14px 0 16px;
+}
+
+.order-confirmed__ref {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  margin-top: -4px;
+}
+
+.order-confirmed__ref code {
+  color: var(--purple-300);
+}
+
+.order-confirmed__actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
