@@ -1,0 +1,122 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  backdrop-filter: blur(14px);
+  background: rgba(11, 7, 19, 0.75);
+  border-bottom: 1px solid var(--border);
+}
+
+.navbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 76px;
+}
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+}
+
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.navbar__link {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  padding: 8px 2px;
+  position: relative;
+  transition: color 0.15s ease;
+}
+
+.navbar__link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--purple-400), var(--purple-600));
+  transition: right 0.2s ease;
+}
+
+.navbar__link:hover {
+  color: var(--text-h);
+}
+
+.navbar__link.is-active {
+  color: var(--text-h);
+}
+
+.navbar__link.is-active::after {
+  right: 0;
+}
+
+.navbar__cta {
+  padding: 10px 20px;
+  font-size: 0.88rem;
+}
+
+.navbar__toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.navbar__toggle span {
+  display: block;
+  height: 2px;
+  margin: 0 8px;
+  background: var(--text-h);
+  border-radius: 2px;
+}
+
+@media (max-width: 860px) {
+  .navbar__toggle {
+    display: flex;
+  }
+
+  .navbar__links {
+    position: absolute;
+    top: 76px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--bg-1);
+    border-bottom: 1px solid var(--border);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease;
+  }
+
+  .navbar__links.is-open {
+    max-height: 400px;
+  }
+
+  .navbar__link {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .navbar__link::after {
+    display: none;
+  }
+
+  .navbar__cta {
+    margin: 16px 24px;
+  }
+}

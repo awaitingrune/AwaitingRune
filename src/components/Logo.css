@@ -1,0 +1,19 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo__mark {
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 10px var(--purple-glow));
+}
+
+.logo__wordmark {
+  font-family: var(--heading);
+  font-weight: 600;
+  font-size: 1.15rem;
+  letter-spacing: 1px;
+  color: var(--text-h);
+  white-space: nowrap;
+}

@@ -1,0 +1,252 @@
+.build-page {
+  padding: 56px 24px 100px;
+}
+
+.build-page__head {
+  max-width: 640px;
+  margin-bottom: 36px;
+}
+
+.build-page__layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 28px;
+  align-items: flex-start;
+}
+
+.build-page__categories {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+.build-cat {
+  padding: 22px;
+}
+
+.build-cat__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.build-cat__head h3 {
+  margin: 0;
+}
+
+.build-cat__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 12px;
+}
+
+.part-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  text-align: left;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-1);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+
+.part-card:hover {
+  border-color: var(--purple-400);
+  transform: translateY(-1px);
+}
+
+.part-card.is-selected {
+  border-color: var(--purple-400);
+  background: linear-gradient(180deg, rgba(168, 85, 247, 0.18), rgba(168, 85, 247, 0.06));
+  box-shadow: 0 0 0 1px var(--purple-400);
+}
+
+.part-card.is-incompatible {
+  opacity: 0.55;
+}
+
+.part-card.is-incompatible:hover {
+  border-color: var(--error);
+}
+
+.part-card__name {
+  font-weight: 600;
+  color: var(--text-h);
+  font-size: 0.92rem;
+}
+
+.part-card__specs {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.part-card__price {
+  margin-top: 6px;
+  font-family: var(--heading);
+  font-size: 0.88rem;
+  color: var(--purple-300);
+}
+
+.part-card__flag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--error);
+}
+
+.build-summary {
+  position: sticky;
+  top: 96px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.build-summary h3 {
+  margin: 0;
+}
+
+.build-summary__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.build-summary__list li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 8px;
+  font-size: 0.82rem;
+  border-bottom: 1px dashed var(--border);
+  padding-bottom: 8px;
+}
+
+.build-summary__label {
+  color: var(--text-dim);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  grid-column: 1 / -1;
+}
+
+.build-summary__value {
+  color: var(--text-h);
+  font-weight: 500;
+}
+
+.build-summary__list li.is-empty .build-summary__value {
+  color: var(--text-dim);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.build-summary__price {
+  color: var(--purple-300);
+  font-family: var(--heading);
+  font-size: 0.82rem;
+}
+
+.build-summary__power {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.build-summary__total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--heading);
+  font-size: 1.3rem;
+  color: var(--text-h);
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+
+.build-summary__issues {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.issue {
+  font-size: 0.8rem;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid;
+}
+
+.issue--error {
+  color: var(--error);
+  border-color: rgba(248, 113, 113, 0.35);
+  background: rgba(248, 113, 113, 0.08);
+}
+
+.issue--warning {
+  color: var(--warning);
+  border-color: rgba(251, 191, 36, 0.35);
+  background: rgba(251, 191, 36, 0.08);
+}
+
+.build-summary__status {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+
+.build-summary__status.is-ok {
+  color: var(--success);
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.build-summary__status.is-error {
+  color: var(--text-dim);
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+}
+
+.build-summary__reset {
+  margin-top: -6px;
+}
+
+.build-summary__note {
+  margin: 0;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  opacity: 0.7;
+  text-align: center;
+}
+
+@media (max-width: 980px) {
+  .build-page__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .build-summary {
+    position: static;
+  }
+}
