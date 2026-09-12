@@ -1,10 +1,10 @@
 import './Logo.css'
 
-// A geometric gaming-PC tower, viewed slightly from front/side, dark
-// metallic panels with a soft internal glow strip. The right edge of the
-// side panel doesn't stay a straight line — it forges outward into the
-// angular strokes of a rune-R, so the rune and the chassis read as one
-// continuous silhouette rather than two overlaid shapes.
+// A single dark-metal PC side panel, viewed at an angle, torn open from
+// within — jagged fracture, a handful of displaced shell fragments, and
+// the rune-R bursting straight out through the breach. The R overlaps the
+// broken edge and a couple of the fragments so it reads as erupting
+// through the shell, not sitting beside it.
 const VIEW = 140
 
 export default function Logo({ size = 44, showWordmark = false, className = '' }) {
@@ -20,62 +20,89 @@ export default function Logo({ size = 44, showWordmark = false, className = '' }
       >
         <defs>
           <linearGradient id="logoRuneGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="var(--purple-200)" />
+            <stop offset="0%" stopColor="var(--purple-100)" />
             <stop offset="100%" stopColor="var(--purple-600)" />
           </linearGradient>
-          <linearGradient id="logoFrontGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <linearGradient id="logoPanelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="var(--bg-2)" />
             <stop offset="100%" stopColor="var(--bg-0)" />
           </linearGradient>
-          <linearGradient id="logoSideGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="var(--bg-1)" />
-            <stop offset="100%" stopColor="var(--bg-0)" />
-          </linearGradient>
-          <filter id="logoGlow" x="-80%" y="-80%" width="260%" height="260%">
-            <feGaussianBlur stdDeviation="3.4" />
+          <radialGradient id="logoVoidGlow" cx="50%" cy="50%" r="55%">
+            <stop offset="0%" stopColor="var(--purple-400)" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="var(--purple-700)" stopOpacity="0" />
+          </radialGradient>
+          <radialGradient id="logoAmbient" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="var(--purple-600)" stopOpacity="0.35" />
+            <stop offset="100%" stopColor="var(--purple-600)" stopOpacity="0" />
+          </radialGradient>
+          <filter id="logoGlowTight" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="2.2" />
           </filter>
-          <filter id="logoSoftGlow" x="-100%" y="-100%" width="300%" height="300%">
-            <feGaussianBlur stdDeviation="6" />
+          <filter id="logoGlowWide" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="4.5" />
+          </filter>
+          <filter id="logoGlowAmbient" x="-120%" y="-120%" width="340%" height="340%">
+            <feGaussianBlur stdDeviation="9" />
           </filter>
         </defs>
 
-        {/* top panel (isometric lip) */}
-        <polygon points="20,20 72,20 86,8 34,8" fill="var(--bg-3)" stroke="var(--purple-700)" strokeWidth="1.2" />
+        {/* ambient purple illumination behind the whole mark */}
+        <circle cx="70" cy="70" r="58" fill="url(#logoAmbient)" filter="url(#logoGlowAmbient)" />
 
-        {/* side panel — its outer edge forges into the rune, drawn below */}
-        <polygon points="72,20 86,8 86,108 72,120" fill="url(#logoSideGrad)" stroke="var(--purple-700)" strokeWidth="1.2" />
+        {/* the case's side panel */}
+        <polygon
+          points="30,8 100,2 108,132 38,138"
+          fill="url(#logoPanelGrad)"
+          stroke="var(--purple-700)"
+          strokeWidth="1.6"
+        />
+        <line x1="42" y1="38" x2="94" y2="34" stroke="var(--purple-700)" strokeWidth="1" opacity="0.4" />
+        <line x1="42" y1="104" x2="98" y2="100" stroke="var(--purple-700)" strokeWidth="1" opacity="0.4" />
 
-        {/* front panel */}
-        <rect x="20" y="20" width="52" height="100" rx="6" fill="url(#logoFrontGrad)" stroke="var(--purple-700)" strokeWidth="1.4" />
+        {/* displaced shell fragments, blown outward from the breach */}
+        <polygon points="52,26 76,20 70,38 50,42" fill="url(#logoPanelGrad)" stroke="var(--purple-400)" strokeWidth="1.3" filter="url(#logoGlowTight)" opacity="0.95" />
+        <polygon points="52,26 76,20 70,38 50,42" fill="url(#logoPanelGrad)" stroke="var(--purple-300)" strokeWidth="0.8" />
+        <polygon points="96,46 114,52 104,74 90,64" fill="url(#logoPanelGrad)" stroke="var(--purple-400)" strokeWidth="1.3" filter="url(#logoGlowTight)" opacity="0.95" />
+        <polygon points="96,46 114,52 104,74 90,64" fill="url(#logoPanelGrad)" stroke="var(--purple-300)" strokeWidth="0.8" />
+        <polygon points="46,88 66,98 54,112 38,100" fill="url(#logoPanelGrad)" stroke="var(--purple-400)" strokeWidth="1.3" filter="url(#logoGlowTight)" opacity="0.95" />
+        <polygon points="46,88 66,98 54,112 38,100" fill="url(#logoPanelGrad)" stroke="var(--purple-300)" strokeWidth="0.8" />
 
-        {/* subtle intake vents */}
-        <g stroke="var(--purple-700)" strokeWidth="1" opacity="0.55" strokeLinecap="round">
-          <line x1="30" y1="27" x2="58" y2="27" />
-          <line x1="30" y1="31" x2="58" y2="31" />
-          <line x1="30" y1="35" x2="58" y2="35" />
-        </g>
+        {/* the jagged breach torn through the panel */}
+        <polygon
+          points="58,42 78,38 92,52 86,72 96,88 74,96 56,86 48,64"
+          fill="var(--bg-0)"
+        />
+        <polygon
+          points="58,42 78,38 92,52 86,72 96,88 74,96 56,86 48,64"
+          fill="url(#logoVoidGlow)"
+          filter="url(#logoGlowWide)"
+        />
+        <polygon
+          points="58,42 78,38 92,52 86,72 96,88 74,96 56,86 48,64"
+          fill="none"
+          stroke="var(--purple-300)"
+          strokeWidth="1.4"
+          strokeLinejoin="round"
+          filter="url(#logoGlowTight)"
+        />
 
-        {/* internal RGB glow visible through the front seam */}
-        <rect x="43" y="42" width="5" height="70" rx="2.5" fill="var(--purple-500)" opacity="0.5" filter="url(#logoSoftGlow)" />
-        <rect x="43" y="42" width="5" height="70" rx="2.5" fill="var(--purple-300)" opacity="0.35" />
-
-        {/* rune-R forged from the side panel's edge — glow pass */}
+        {/* the rune-R, erupting through the breach — glow pass */}
         <path
-          d="M 86 34 L 86 98 M 86 34 L 110 34 L 120 48 L 110 62 L 86 62 M 86 62 L 118 98"
+          d="M 66 38 L 66 100 M 66 38 L 90 38 L 100 52 L 90 66 L 66 66 M 66 66 L 98 100"
           fill="none"
           stroke="var(--purple-400)"
-          strokeWidth="7"
+          strokeWidth="9"
           strokeLinecap="round"
           strokeLinejoin="round"
-          opacity="0.75"
-          filter="url(#logoGlow)"
+          opacity="0.8"
+          filter="url(#logoGlowWide)"
         />
         {/* rune-R core strokes, sharp and bright */}
         <path
-          d="M 86 34 L 86 98 M 86 34 L 110 34 L 120 48 L 110 62 L 86 62 M 86 62 L 118 98"
+          d="M 66 38 L 66 100 M 66 38 L 90 38 L 100 52 L 90 66 L 66 66 M 66 66 L 98 100"
           fill="none"
           stroke="url(#logoRuneGrad)"
-          strokeWidth="3.2"
+          strokeWidth="4.2"
           strokeLinejoin="miter"
           strokeLinecap="square"
         />
