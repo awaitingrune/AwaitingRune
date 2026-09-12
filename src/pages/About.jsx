@@ -37,7 +37,7 @@ export default function About() {
     <div className="about container">
       <section className="about__intro">
         <span className="eyebrow">About AwaitingRune</span>
-        <h1>Builds cut clean, every time</h1>
+        <h1>Machines that leave a mark</h1>
         <p>
           I love PCs, and I've been building them for a long time — long enough to know exactly
           how it feels when a part list almost works, or when a "compatible" build turns out not
