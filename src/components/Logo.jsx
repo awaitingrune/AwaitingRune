@@ -1,44 +1,19 @@
 import './Logo.css'
 
-// Omega (Ω) ring surrounding the R: a broken circle with two flared feet.
-const OMEGA_R = 44
-const OMEGA_GAP_DEG = 100
-const OMEGA_ARC_STEPS = 48
-const OMEGA_FOOT_R = 53
-const OMEGA_FOOT_SPREAD_DEG = 18
+// A PC case with a jagged crack running down the side, glowing from
+// within — the R rune sits engraved at the fracture, as if it's the
+// source of the crack.
+const CASE_X = 18
+const CASE_Y = 8
+const CASE_W = 84
+const CASE_H = 104
+const CASE_RX = 12
 
-function polar(cx, cy, r, angleDeg) {
-  const rad = ((angleDeg - 90) * Math.PI) / 180
-  return [cx + r * Math.cos(rad), cy + r * Math.sin(rad)]
-}
+const CRACK_PATH = 'M 66 8 L 54 24 L 68 36 L 48 52 L 66 66 L 46 80 L 62 94 L 50 112'
 
-function pt(cx, cy, r, angle) {
-  const [x, y] = polar(cx, cy, r, angle)
-  return `${x.toFixed(2)} ${y.toFixed(2)}`
-}
-
-function buildOmegaPath(cx, cy) {
-  const gapHalf = OMEGA_GAP_DEG / 2
-  const arcStart = 180 - gapHalf // right-hand end of the arc
-  const arcEnd = 180 + gapHalf // left-hand end of the arc
-
-  const arcPoints = Array.from({ length: OMEGA_ARC_STEPS + 1 }, (_, i) => {
-    const t = arcEnd + (i / OMEGA_ARC_STEPS) * (arcStart + 360 - arcEnd)
-    return pt(cx, cy, OMEGA_R, t)
-  })
-
-  // arcPoints[0] sits at the lower-left arc end (arcEnd); the last point
-  // sits at the lower-right arc end (arcStart) — feet attach accordingly.
-  const leftFootTip = pt(cx, cy, OMEGA_FOOT_R, arcEnd + OMEGA_FOOT_SPREAD_DEG)
-  const rightFootTip = pt(cx, cy, OMEGA_FOOT_R, arcStart - OMEGA_FOOT_SPREAD_DEG)
-
-  return `M ${leftFootTip} L ${arcPoints.join(' L ')} L ${rightFootTip}`
-}
+const R_PATH = 'M 44 30 L 44 90 M 44 30 L 68 30 L 76 44 L 68 58 L 44 58 M 44 58 L 76 90'
 
 export default function Logo({ size = 44, showWordmark = false, className = '' }) {
-  const cx = 60
-  const cy = 60
-
   return (
     <div className={`logo ${className}`} style={{ '--logo-size': `${size}px` }}>
       <svg
@@ -54,22 +29,51 @@ export default function Logo({ size = 44, showWordmark = false, className = '' }
             <stop offset="0%" stopColor="var(--purple-300)" />
             <stop offset="100%" stopColor="var(--purple-600)" />
           </linearGradient>
+          <linearGradient id="logoCaseGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="var(--bg-3)" />
+            <stop offset="100%" stopColor="var(--bg-1)" />
+          </linearGradient>
+          <filter id="logoCrackGlow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="3.2" />
+          </filter>
         </defs>
 
-        <path
-          d={buildOmegaPath(cx, cy)}
-          fill="none"
+        <rect
+          x={CASE_X}
+          y={CASE_Y}
+          width={CASE_W}
+          height={CASE_H}
+          rx={CASE_RX}
+          fill="url(#logoCaseGrad)"
           stroke="url(#logoGrad)"
-          strokeWidth="3.5"
+          strokeWidth="2.5"
+        />
+
+        <path
+          d={CRACK_PATH}
+          fill="none"
+          stroke="var(--purple-400)"
+          strokeWidth="6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          opacity="0.65"
+          filter="url(#logoCrackGlow)"
+        />
+
+        <path
+          d={CRACK_PATH}
+          fill="none"
+          stroke="var(--purple-200)"
+          strokeWidth="1.6"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
 
         <path
-          d="M 44 26 L 44 94 M 44 26 L 70 26 L 78 40 L 70 54 L 44 54 M 44 54 L 78 94"
+          d={R_PATH}
           fill="none"
           stroke="url(#logoGrad)"
-          strokeWidth="8.5"
+          strokeWidth="7.5"
           strokeLinejoin="miter"
           strokeLinecap="square"
         />
