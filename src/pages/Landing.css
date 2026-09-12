@@ -224,4 +224,10 @@
   .showcase__foot {
     justify-content: center;
   }
+
+  .showcase__info .prebuilt__badge {
+    position: static;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
 }
