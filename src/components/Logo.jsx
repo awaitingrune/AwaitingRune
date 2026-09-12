@@ -102,11 +102,10 @@ export default function Logo({ size = 44, showWordmark = false, className = '' }
           </g>
         ))}
 
-        {/* the rune-R, forced through the panel — shadow / glow / body / edge */}
+        {/* the rune-R, forced through the panel — shadow / glow / body */}
         <path d={RUNE_PATH} fill="none" stroke="var(--bg-0)" strokeWidth="26" strokeLinejoin="miter" strokeLinecap="square" transform="translate(3, 4)" />
         <path d={RUNE_PATH} fill="none" stroke="var(--purple-400)" strokeWidth="24" strokeLinecap="round" strokeLinejoin="round" opacity="0.85" filter="url(#logoGlowWide)" />
         <path d={RUNE_PATH} fill="none" stroke="url(#logoRuneGrad)" strokeWidth="17" strokeLinejoin="miter" strokeLinecap="square" />
-        <path d={RUNE_PATH} fill="none" stroke="var(--purple-100)" strokeWidth="3.5" strokeLinejoin="miter" strokeLinecap="square" opacity="0.9" transform="translate(-1.5, -1.5)" />
       </svg>
       {showWordmark && <span className="logo__wordmark">AwaitingRune</span>}
     </div>
