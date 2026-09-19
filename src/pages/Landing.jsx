@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 import Logo from '../components/Logo.jsx'
 import FractureLines from '../components/FractureLines.jsx'
 import { formatPrice } from '../utils/format.js'
-import PCTower from '../components/PCTower.jsx'
+import { useQuiz } from '../components/QuizProvider.jsx'
+import RigVisual from '../components/RigVisual.jsx'
 import pcShowcase from '../assets/pc-showcase.webp'
 import { PREBUILTS, resolveBuild } from '../data/prebuilts.js'
 import { evaluateBuild } from '../utils/compatibility.js'
@@ -39,6 +40,7 @@ const STEPS = [
 ]
 
 export default function Landing() {
+  const { openQuiz } = useQuiz()
   const [activeIndex, setActiveIndex] = useState(0)
 
   useEffect(() => {
@@ -126,17 +128,17 @@ export default function Landing() {
             <Link to="/about" className="btn">
               Talk to me
             </Link>
-            <Link to="/gallery" className="btn">
+            <Link to="/prebuilts" className="btn">
               See my builds
             </Link>
           </div>
         </div>
-        <Link to="/find-your-pc" className="card why__quiz">
+        <button type="button" className="card why__quiz" onClick={openQuiz}>
           <span className="eyebrow">Not sure where to start?</span>
           <h3>Find your PC</h3>
           <p>Answer a few quick questions about what you play and what you can spend, and I will point you at the right build.</p>
           <span className="feature__cta">Take the quiz &rarr;</span>
-        </Link>
+        </button>
       </section>
 
       <section className="container steps">
@@ -166,7 +168,7 @@ export default function Landing() {
 
         <div className="showcase__panel card">
           <div className="showcase__image" key={`img-${active.id}`}>
-            <PCTower build={resolveBuild(active.partIds)} />
+            <RigVisual id={active.id} build={resolveBuild(active.partIds)} alt={`${active.name} custom PC`} />
           </div>
           <div className="showcase__info" key={`info-${active.id}`}>
             {active.featured && <span className="prebuilt__badge">Most popular</span>}

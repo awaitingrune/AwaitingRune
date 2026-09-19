@@ -1,10 +1,11 @@
-.quiz {
-  padding: 56px 24px 40px;
-  max-width: 960px;
+.quiz__head {
+  margin-bottom: 24px;
+  padding-right: 40px;
 }
 
-.quiz__head {
-  margin-bottom: 28px;
+.quiz__head h2 {
+  margin: 6px 0 8px;
+  font-size: 1.8rem;
 }
 
 .quiz__head p {
@@ -12,7 +13,7 @@
 }
 
 .quiz__panel {
-  padding: 28px;
+  padding: 0;
 }
 
 .quiz__progress {
@@ -290,7 +291,141 @@
     padding: 24px 18px;
   }
 
-  .quiz__panel {
-    padding: 20px 16px;
+}
+
+/* ---- modal shell ---- */
+.qmodal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 16px;
+  background: rgba(5, 3, 10, 0.8);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: qfade 0.2s ease both;
+}
+
+.qmodal__panel {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  max-height: calc(100svh - 48px);
+  overflow-y: auto;
+  padding: 32px;
+  animation: qrise 0.25s ease both;
+}
+
+.qmodal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-1);
+  color: var(--text-h);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.qmodal__close:hover {
+  border-color: var(--purple-400);
+}
+
+@keyframes qfade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes qrise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@media (max-width: 760px) {
+  .qmodal {
+    padding: 0;
+  }
+
+  .qmodal__panel {
+    max-height: 100svh;
+    min-height: 100svh;
+    border-radius: 0;
+    padding: 24px 16px 32px;
+  }
+
+  .quiz__head h2 {
+    font-size: 1.45rem;
+  }
+}
+
+/* ---- "need help?" prompt ---- */
+.qprompt {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 90;
+  width: 320px;
+  max-width: calc(100vw - 32px);
+  padding: 20px;
+  border-color: var(--purple-400);
+  box-shadow: 0 0 0 1px var(--purple-400), 0 20px 50px -12px rgba(0, 0, 0, 0.7), 0 0 40px -10px var(--purple-glow);
+  animation: qrise 0.35s ease both;
+}
+
+.qprompt h3 {
+  margin: 0 0 6px;
+  font-size: 1.15rem;
+}
+
+.qprompt p {
+  margin: 0 0 16px;
+  font-size: 0.9rem;
+}
+
+.qprompt__actions {
+  display: flex;
+  gap: 10px;
+}
+
+.qprompt__actions .btn {
+  padding: 9px 16px;
+  font-size: 0.85rem;
+}
+
+.qprompt__close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.qprompt__close:hover {
+  color: var(--text-h);
+}
+
+@media (max-width: 600px) {
+  .qprompt {
+    right: 16px;
+    left: 16px;
+    bottom: 16px;
+    width: auto;
+    max-width: none;
   }
 }

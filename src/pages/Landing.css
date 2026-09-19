@@ -324,6 +324,10 @@
 }
 
 .why__quiz {
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   gap: 6px;

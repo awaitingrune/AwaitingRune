@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import Logo from './Logo.jsx'
 import Vine from './Vine.jsx'
 import { CONTACT, SOCIALS } from '../data/site.js'
+import { useQuiz } from './QuizProvider.jsx'
 import './Footer.css'
 
 const ICON_PATHS = {
@@ -53,8 +54,6 @@ function SocialIcon({ name }) {
 const SHOP_LINKS = [
   { to: '/prebuilts', label: 'Prebuilt PCs' },
   { to: '/custom-build', label: 'Custom Builder' },
-  { to: '/find-your-pc', label: 'Find Your PC' },
-  { to: '/gallery', label: 'Build Gallery' },
 ]
 
 const SUPPORT_LINKS = [
@@ -66,6 +65,7 @@ const SUPPORT_LINKS = [
 
 export default function Footer() {
   const socials = SOCIALS.filter((s) => s.url)
+  const { openQuiz } = useQuiz()
 
   return (
     <footer className="footer">
@@ -103,6 +103,11 @@ export default function Footer() {
                   <Link to={l.to}>{l.label}</Link>
                 </li>
               ))}
+              <li>
+                <button type="button" className="footer__linkbtn" onClick={openQuiz}>
+                  Find Your PC
+                </button>
+              </li>
             </ul>
           </nav>
 

@@ -157,3 +157,17 @@
     letter-spacing: 2px;
   }
 }
+
+.footer__linkbtn {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.footer__linkbtn:hover {
+  color: var(--purple-200);
+}
