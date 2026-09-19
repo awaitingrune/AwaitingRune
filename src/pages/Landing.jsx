@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Logo from '../components/Logo.jsx'
+import FractureLines from '../components/FractureLines.jsx'
 import PCTower from '../components/PCTower.jsx'
+import pcShowcase from '../assets/pc-showcase.webp'
 import { PREBUILTS, resolveBuild } from '../data/prebuilts.js'
 import { evaluateBuild } from '../utils/compatibility.js'
 import './Landing.css'
@@ -73,6 +75,22 @@ export default function Landing() {
               View Prebuilts
             </Link>
           </div>
+        </div>
+      </section>
+
+      <section className="stage">
+        <div className="stage__glow" aria-hidden="true" />
+        <FractureLines className="stage__cracks stage__cracks--left" />
+        <FractureLines className="stage__cracks stage__cracks--right" />
+        <div className="stage__frame">
+          <img
+            className="stage__img"
+            src={pcShowcase}
+            width="1254"
+            height="1254"
+            alt="A black custom gaming PC with a cracked stone-textured side panel, a glowing purple rune R, and purple RGB fans"
+            decoding="async"
+          />
         </div>
       </section>
 
