@@ -22,7 +22,7 @@
 .navbar__links {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 24px;
 }
 
 .navbar__link {
@@ -83,7 +83,7 @@
   border-radius: 2px;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1120px) {
   .navbar__toggle {
     display: flex;
   }
@@ -104,7 +104,7 @@
   }
 
   .navbar__links.is-open {
-    max-height: 400px;
+    max-height: 520px;
   }
 
   .navbar__link {
@@ -119,4 +119,8 @@
   .navbar__cta {
     margin: 16px 24px;
   }
+}
+
+.navbar__link {
+  white-space: nowrap;
 }

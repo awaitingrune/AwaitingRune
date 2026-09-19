@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Logo from '../components/Logo.jsx'
 import FractureLines from '../components/FractureLines.jsx'
+import { formatPrice } from '../utils/format.js'
 import PCTower from '../components/PCTower.jsx'
 import pcShowcase from '../assets/pc-showcase.webp'
 import { PREBUILTS, resolveBuild } from '../data/prebuilts.js'
@@ -104,6 +105,40 @@ export default function Landing() {
         ))}
       </section>
 
+      <section className="container why">
+        <div className="why__copy">
+          <span className="eyebrow">Why AwaitingRune</span>
+          <h2>I build PCs because I love it</h2>
+          <p>
+            I have been building PCs for a good few years now and I still get a kick out of it. Choosing the parts,
+            getting the cables tidy, pressing the power button and watching it boot first time. That never gets old.
+          </p>
+          <p>
+            I started AwaitingRune because I kept seeing people spend a lot of money on a PC that was wrong for what
+            they wanted, or end up with parts that would not work together. I wanted to be the person who sorts that
+            out properly.
+          </p>
+          <p>
+            So every build here is one I would happily put on my own desk. Not sure what you need? Just ask. You will
+            get a straight answer from me, not a sales script.
+          </p>
+          <div className="why__actions">
+            <Link to="/about" className="btn">
+              Talk to me
+            </Link>
+            <Link to="/gallery" className="btn">
+              See my builds
+            </Link>
+          </div>
+        </div>
+        <Link to="/find-your-pc" className="card why__quiz">
+          <span className="eyebrow">Not sure where to start?</span>
+          <h3>Find your PC</h3>
+          <p>Answer a few quick questions about what you play and what you can spend, and I will point you at the right build.</p>
+          <span className="feature__cta">Take the quiz &rarr;</span>
+        </Link>
+      </section>
+
       <section className="container steps">
         <span className="eyebrow">How it works</span>
         <h2>We make it simple to forge your own</h2>
@@ -139,7 +174,7 @@ export default function Landing() {
             <h3>{active.name}</h3>
             <p>{active.blurb}</p>
             <div className="showcase__foot">
-              <span className="showcase__price">${activeEvaluation.subtotal.toLocaleString()}</span>
+              <span className="showcase__price">{formatPrice(activeEvaluation.subtotal)}</span>
               <Link to="/custom-build" state={{ presetIds: active.partIds }} className="btn btn-primary">
                 Customize
               </Link>

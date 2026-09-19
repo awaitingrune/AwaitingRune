@@ -7,13 +7,89 @@
 .footer__inner {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
+  gap: 28px;
+}
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.3fr;
+  gap: 32px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.footer__heading {
+  display: block;
+  margin-bottom: 14px;
+  font-family: var(--heading);
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-h);
+}
+
+.footer__about p {
+  margin: 0 0 16px;
+  max-width: 300px;
+  font-size: 0.88rem;
+  color: var(--text-dim);
+}
+
+.footer__col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  font-size: 0.88rem;
+}
+
+.footer__col a {
+  color: var(--text-dim);
+  transition: color 0.15s ease;
+}
+
+.footer__col a:hover {
+  color: var(--purple-200);
+}
+
+.footer__muted {
+  color: var(--text-dim);
+}
+
+.footer__social {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
+}
+
+.footer__social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--border-strong);
+  color: var(--purple-200);
+  transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.footer__social a:hover {
+  background: rgba(168, 85, 247, 0.18);
+  box-shadow: 0 0 16px -4px var(--purple-glow);
+  transform: translateY(-2px);
 }
 
 .footer__wordmark-row {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 16px;
 }
 
@@ -51,12 +127,24 @@
   text-shadow: 0 0 18px var(--bg-0);
 }
 
-.footer__copy {
-  align-self: flex-end;
-  margin: 8px 0 0;
+.footer__base {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
   font-size: 0.72rem;
   color: var(--text-dim);
-  opacity: 0.65;
+  opacity: 0.75;
+}
+
+@media (max-width: 860px) {
+  .footer__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer__about {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 600px) {

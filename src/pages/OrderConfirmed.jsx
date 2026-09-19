@@ -10,8 +10,7 @@ export default function OrderConfirmed() {
         <span className="eyebrow">Order received</span>
         <h1>Thanks — your build is on its way.</h1>
         <p>
-          Payment went through and we've got your order. We'll be in touch by email to confirm build details and
-          shipping.
+          Payment went through and I've got your order. I'll email you to confirm the build details, and you'll get another email when it ships. See the <Link to="/support#delivery">delivery info</Link> for what happens next.
         </p>
         {sessionId && (
           <p className="order-confirmed__ref">

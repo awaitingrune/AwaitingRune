@@ -4,8 +4,10 @@ import Logo from './Logo.jsx'
 import './NavBar.css'
 
 const LINKS = [
-  { to: '/custom-build', label: 'Custom Build' },
   { to: '/prebuilts', label: 'Prebuilts' },
+  { to: '/custom-build', label: 'Custom Build' },
+  { to: '/find-your-pc', label: 'Find Your PC' },
+  { to: '/gallery', label: 'Build Gallery' },
   { to: '/about', label: 'About & Contact' },
 ]
 

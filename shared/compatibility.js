@@ -102,3 +102,76 @@ export function evaluateBuild(build) {
     subtotal,
   }
 }
+
+// One row per thing a builder wants to know is fine. Each row is 'pending'
+// until the parts it depends on have been picked, then 'pass', 'warn' or 'fail'.
+export function getCompatibilityChecks(build) {
+  const { cpu, motherboard, ram, gpu, cooler, psu, case: pcCase } = build
+  const pending = (id, label, detail) => ({ id, label, status: 'pending', detail })
+
+  const checks = []
+
+  checks.push(
+    cpu && motherboard
+      ? cpu.socket === motherboard.socket
+        ? { id: 'socket', label: 'CPU socket', status: 'pass', detail: `${cpu.socket} CPU on a ${motherboard.socket} board.` }
+        : { id: 'socket', label: 'CPU socket', status: 'fail', detail: `${cpu.socket} CPU can't fit a ${motherboard.socket} board.` }
+      : pending('socket', 'CPU socket', 'Pick a CPU and a motherboard.')
+  )
+
+  if (ram && motherboard) {
+    if (ram.type !== motherboard.ramType) {
+      checks.push({ id: 'memory', label: 'Memory', status: 'fail', detail: `Board needs ${motherboard.ramType}, this kit is ${ram.type}.` })
+    } else if (ram.capacityGB > motherboard.maxRamGB) {
+      checks.push({ id: 'memory', label: 'Memory', status: 'warn', detail: `${ram.capacityGB}GB is over the board's ${motherboard.maxRamGB}GB limit.` })
+    } else {
+      checks.push({ id: 'memory', label: 'Memory', status: 'pass', detail: `${ram.type}, ${ram.capacityGB}GB (board supports up to ${motherboard.maxRamGB}GB).` })
+    }
+  } else {
+    checks.push(pending('memory', 'Memory', 'Pick memory and a motherboard.'))
+  }
+
+  checks.push(
+    motherboard && pcCase
+      ? pcCase.formFactors.includes(motherboard.formFactor)
+        ? { id: 'board-fit', label: 'Board fits case', status: 'pass', detail: `${motherboard.formFactor} board in a ${pcCase.formFactors.join(' / ')} case.` }
+        : { id: 'board-fit', label: 'Board fits case', status: 'fail', detail: `${motherboard.formFactor} board won't fit this case.` }
+      : pending('board-fit', 'Board fits case', 'Pick a motherboard and a case.')
+  )
+
+  checks.push(
+    gpu && pcCase
+      ? gpu.lengthMm <= pcCase.maxGpuLengthMm
+        ? { id: 'gpu-fit', label: 'Graphics card clearance', status: 'pass', detail: `${gpu.lengthMm}mm card, case fits up to ${pcCase.maxGpuLengthMm}mm.` }
+        : { id: 'gpu-fit', label: 'Graphics card clearance', status: 'fail', detail: `${gpu.lengthMm}mm card is too long for a ${pcCase.maxGpuLengthMm}mm case.` }
+      : pending('gpu-fit', 'Graphics card clearance', 'Pick a graphics card and a case.')
+  )
+
+  if (cooler && cpu) {
+    if (!cooler.sockets.includes(cpu.socket)) {
+      checks.push({ id: 'cooler', label: 'CPU cooler', status: 'fail', detail: `This cooler doesn't mount on ${cpu.socket}.` })
+    } else if (cooler.tdpRatingW < cpu.tdp) {
+      checks.push({ id: 'cooler', label: 'CPU cooler', status: 'warn', detail: `Rated ${cooler.tdpRatingW}W, the CPU can draw ${cpu.tdp}W.` })
+    } else {
+      checks.push({ id: 'cooler', label: 'CPU cooler', status: 'pass', detail: `Fits ${cpu.socket}, rated ${cooler.tdpRatingW}W for a ${cpu.tdp}W CPU.` })
+    }
+  } else {
+    checks.push(pending('cooler', 'CPU cooler', 'Pick a CPU and a cooler.'))
+  }
+
+  if (psu && (cpu || gpu)) {
+    const drawW = (cpu?.tdp ?? 0) + (gpu?.tdp ?? 0) + BASELINE_DRAW_W
+    const recommendedW = Math.ceil((drawW * PSU_SAFETY_MARGIN) / 10) * 10
+    if (psu.wattage < drawW * PSU_MIN_MARGIN) {
+      checks.push({ id: 'power', label: 'Power supply', status: 'fail', detail: `${psu.wattage}W is under the estimated ${drawW}W draw.` })
+    } else if (psu.wattage < recommendedW) {
+      checks.push({ id: 'power', label: 'Power supply', status: 'warn', detail: `${psu.wattage}W will run it, but ${recommendedW}W+ leaves proper headroom.` })
+    } else {
+      checks.push({ id: 'power', label: 'Power supply', status: 'pass', detail: `${psu.wattage}W for an estimated ${drawW}W draw.` })
+    }
+  } else {
+    checks.push(pending('power', 'Power supply', 'Pick a power supply, plus a CPU or graphics card.'))
+  }
+
+  return checks
+}

@@ -110,9 +110,6 @@ export default function About() {
             <button type="submit" className="btn btn-primary btn-block">
               Send Message
             </button>
-            <p className="about__form-note">
-              Wired to Netlify Forms — goes live once this site is deployed on Netlify.
-            </p>
           </form>
         </section>
       </div>

@@ -64,7 +64,7 @@ export default async (req) => {
         return {
           quantity: 1,
           price_data: {
-            currency: 'usd',
+            currency: 'gbp',
             unit_amount: Math.round(part.price * 100),
             product_data: {
               name: part.name,
@@ -73,6 +73,8 @@ export default async (req) => {
           },
         }
       }),
+      shipping_address_collection: { allowed_countries: ['GB'] },
+      phone_number_collection: { enabled: true },
       success_url: `${siteUrl}/order-confirmed?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}${safeCancelPath}`,
       metadata: {

@@ -4,7 +4,10 @@ import { CATEGORIES, PARTS, findPart } from '../data/parts.js'
 import { evaluateBuild } from '../utils/compatibility.js'
 import { startCheckout } from '../utils/checkout.js'
 import { RIG_IMAGES } from '../data/rigImages.js'
+import { formatPrice } from '../utils/format.js'
 import PCTower from '../components/PCTower.jsx'
+import CompatibilityChecker from '../components/CompatibilityChecker.jsx'
+import BuildPerformance from '../components/BuildPerformance.jsx'
 import './CustomBuild.css'
 
 function shortName(name) {
@@ -167,6 +170,11 @@ export default function CustomBuild() {
 
       <div className="build-page__layout">
         <div className="build-page__categories">
+          <div className="build-insights">
+            <CompatibilityChecker build={build} />
+            <BuildPerformance build={build} />
+          </div>
+
           {CATEGORIES.map((cat) => {
             const selected = build[cat.key]
             return (
@@ -189,7 +197,7 @@ export default function CustomBuild() {
                       >
                         <span className="part-card__name">{option.name}</span>
                         <span className="part-card__specs">{specLine(cat.key, option)}</span>
-                        <span className="part-card__price">${option.price}</span>
+                        <span className="part-card__price">{formatPrice(option.price)}</span>
                         {incompatible && <span className="part-card__flag">Incompatible</span>}
                       </button>
                     )
@@ -246,7 +254,7 @@ export default function CustomBuild() {
                 <li key={cat.key} className={part ? '' : 'is-empty'}>
                   <span className="build-summary__label">{cat.label}</span>
                   <span className="build-summary__value">{part ? part.name : 'Not selected'}</span>
-                  <span className="build-summary__price">{part ? `$${part.price}` : '—'}</span>
+                  <span className="build-summary__price">{part ? formatPrice(part.price) : '—'}</span>
                 </li>
               )
             })}
@@ -259,7 +267,7 @@ export default function CustomBuild() {
 
           <div className="build-summary__total">
             <span>Subtotal</span>
-            <span>${evaluation.subtotal.toLocaleString()}</span>
+            <span>{formatPrice(evaluation.subtotal)}</span>
           </div>
 
           {evaluation.issues.length > 0 && (

@@ -296,3 +296,60 @@
     display: none;
   }
 }
+
+/* ---- why AwaitingRune ---- */
+.why {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 40px;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.why__copy h2 {
+  margin: 8px 0 18px;
+}
+
+.why__copy p {
+  max-width: 560px;
+  margin: 0 0 14px;
+}
+
+.why__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.why__quiz {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 28px;
+  border-color: var(--purple-400);
+  box-shadow: 0 0 0 1px var(--purple-400), 0 16px 40px -18px var(--purple-glow);
+  transition: transform 0.15s ease;
+}
+
+.why__quiz:hover {
+  transform: translateY(-2px);
+}
+
+.why__quiz h3 {
+  margin: 4px 0 0;
+  font-size: 1.5rem;
+}
+
+.why__quiz p {
+  margin: 0 0 8px;
+  font-size: 0.92rem;
+}
+
+@media (max-width: 860px) {
+  .why {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}

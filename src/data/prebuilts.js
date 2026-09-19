@@ -120,7 +120,7 @@ export const PREBUILTS = [
     rune: { key: 'fehu', label: 'Fehu', meaning: 'Wealth' },
     tier: 'Value · 1080p',
     name: 'Rune of Value',
-    blurb: 'Smart-money 1080p gaming. The most frames per dollar we build.',
+    blurb: 'Smart-money 1080p gaming. The most frames per pound we build.',
     targetRes: '1080',
     headlineGames: ['cs2', 'fortnite', 'cyberpunk'],
     partIds: {

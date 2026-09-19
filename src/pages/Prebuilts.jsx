@@ -6,6 +6,7 @@ import { PREBUILTS, PREBUILT_CATEGORIES, presetInCategory, resolveBuild } from '
 import { evaluateBuild } from '../utils/compatibility.js'
 import { rankForGame, performanceFor } from '../utils/fps.js'
 import { startCheckout } from '../utils/checkout.js'
+import { formatPrice } from '../utils/format.js'
 import RigVisual from '../components/RigVisual.jsx'
 import FpsPanel from '../components/FpsPanel.jsx'
 import RuneGlyph, { RUNE_KEYS } from '../components/RuneGlyph.jsx'
@@ -220,7 +221,7 @@ export default function Prebuilts() {
                 )}
 
                 <div className="prebuilt__foot">
-                  <span className="prebuilt__price">${evaluation.subtotal.toLocaleString()}</span>
+                  <span className="prebuilt__price">{formatPrice(evaluation.subtotal)}</span>
                   <div className="prebuilt__actions">
                     <Link to="/custom-build" state={{ presetIds: preset.partIds }} className="btn">
                       Customize
