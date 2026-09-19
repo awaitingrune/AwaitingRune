@@ -8,8 +8,12 @@ export const PREBUILT_CATEGORIES = [
   { key: 'all', label: 'All' },
   { key: 'gaming', label: 'Gaming' },
   { key: 'workstation', label: 'Workstations' },
+  { key: 'rune', label: 'Rune Series', subtitle: 'We have a rune for everything' },
 ]
 
+// targetRes / headlineGames drive the "Estimated FPS" list on each card
+// (see src/utils/fps.js). Rigs in the Rune Series carry a `rune` entry:
+// its key selects the glyph in src/components/RuneGlyph.jsx.
 export const PREBUILTS = [
   {
     id: 'starter',
@@ -17,6 +21,8 @@ export const PREBUILTS = [
     tier: 'Starter',
     name: 'Wayfarer Rig',
     blurb: '1080p gaming and everyday work without the premium price tag.',
+    targetRes: '1080',
+    headlineGames: ['cs2', 'fortnite', 'cyberpunk'],
     partIds: {
       cpu: 'cpu-iron6',
       motherboard: 'mb-ward-b760m',
@@ -34,6 +40,8 @@ export const PREBUILTS = [
     tier: 'Performance',
     name: 'Sigilstrike Rig',
     blurb: 'High refresh 1440p gaming and heavier creative workloads.',
+    targetRes: '1440',
+    headlineGames: ['cyberpunk', 'apex', 'rdr2'],
     partIds: {
       cpu: 'cpu-neb8',
       motherboard: 'mb-glyph-b650',
@@ -52,6 +60,8 @@ export const PREBUILTS = [
     tier: 'Elite',
     name: 'Runeforged Rig',
     blurb: '4K gaming and full-throttle rendering, no compromises.',
+    targetRes: '2160',
+    headlineGames: ['cyberpunk', 'rdr2', 'starfield'],
     partIds: {
       cpu: 'cpu-rune12',
       motherboard: 'mb-glyph-x670',
@@ -69,6 +79,8 @@ export const PREBUILTS = [
     tier: 'Creator',
     name: 'Forgehand Rig',
     blurb: 'Editing, compiling, and multitasking with RAM to spare.',
+    targetRes: '1440',
+    headlineGames: ['cyberpunk', 'bg3', 'starfield'],
     partIds: {
       cpu: 'cpu-iron10',
       motherboard: 'mb-ward-z790',
@@ -86,6 +98,8 @@ export const PREBUILTS = [
     tier: 'Studio Pro',
     name: 'Anvilcore Rig',
     blurb: 'Serious render and export times for full-time creative work.',
+    targetRes: '1440',
+    headlineGames: ['cyberpunk', 'bg3', 'starfield'],
     partIds: {
       cpu: 'cpu-rune12',
       motherboard: 'mb-glyph-x670',
@@ -97,4 +111,138 @@ export const PREBUILTS = [
       case: 'case-elite',
     },
   },
+
+  // ---- Rune Series ----
+  {
+    id: 'fehu',
+    series: 'rune',
+    category: 'gaming',
+    rune: { key: 'fehu', meaning: 'Wealth' },
+    tier: 'Value · 1080p',
+    name: 'Fehu',
+    blurb: 'Smart-money 1080p gaming. The most frames per dollar we build.',
+    targetRes: '1080',
+    headlineGames: ['cs2', 'fortnite', 'cyberpunk'],
+    partIds: {
+      cpu: 'cpu-neb6',
+      motherboard: 'mb-sigil-b650m',
+      ram: 'ram-16-ddr5',
+      gpu: 'gpu-4060',
+      storage: 'sto-nvme-1tb',
+      cooler: 'cool-air',
+      psu: 'psu-550',
+      case: 'case-mini',
+    },
+  },
+  {
+    id: 'tiwaz',
+    series: 'rune',
+    category: 'gaming',
+    rune: { key: 'tiwaz', meaning: 'Victory' },
+    tier: 'Esports · High refresh',
+    name: 'Tiwaz',
+    blurb: 'Built to win. A 3D V-Cache CPU for 240Hz+ shooters and battle royales.',
+    targetRes: '1440',
+    headlineGames: ['cs2', 'apex', 'warzone'],
+    partIds: {
+      cpu: 'cpu-x3d8',
+      motherboard: 'mb-sigil-b650m',
+      ram: 'ram-32-ddr5',
+      gpu: 'gpu-void90',
+      storage: 'sto-nvme-1tb',
+      cooler: 'cool-air-pro',
+      psu: 'psu-650',
+      case: 'case-tower',
+    },
+  },
+  {
+    id: 'uruz',
+    series: 'rune',
+    category: 'gaming',
+    rune: { key: 'uruz', meaning: 'Strength' },
+    tier: 'Raster power · 1440p',
+    name: 'Uruz',
+    blurb: 'Raw horsepower and 16GB of VRAM for maxed-out 1440p in the big open worlds.',
+    targetRes: '1440',
+    headlineGames: ['cyberpunk', 'rdr2', 'bg3'],
+    partIds: {
+      cpu: 'cpu-neb8',
+      motherboard: 'mb-glyph-b650',
+      ram: 'ram-32-ddr5',
+      gpu: 'gpu-ember800',
+      storage: 'sto-nvme-2tb',
+      cooler: 'cool-air-pro',
+      psu: 'psu-650',
+      case: 'case-tower',
+    },
+  },
+  {
+    id: 'ansuz',
+    series: 'rune',
+    category: 'gaming',
+    rune: { key: 'ansuz', meaning: 'Signal' },
+    tier: 'Game + stream',
+    name: 'Ansuz',
+    blurb: 'Play and broadcast at once. Twenty cores keep the encoder fed while you frag.',
+    targetRes: '1440',
+    headlineGames: ['fortnite', 'warzone', 'cyberpunk'],
+    partIds: {
+      cpu: 'cpu-iron10',
+      motherboard: 'mb-ward-z790',
+      ram: 'ram-32-ddr5',
+      gpu: 'gpu-4070s',
+      storage: 'sto-nvme-2tb',
+      cooler: 'cool-aio240',
+      psu: 'psu-850',
+      case: 'case-tower',
+    },
+  },
+  {
+    id: 'kenaz',
+    series: 'rune',
+    category: 'workstation',
+    rune: { key: 'kenaz', meaning: 'Torch' },
+    tier: 'Create · Edit · Render',
+    name: 'Kenaz',
+    blurb: 'The creator’s torch. 64GB of RAM and twelve cores for editing, 3D and renders.',
+    targetRes: '1440',
+    headlineGames: ['cyberpunk', 'bg3', 'starfield'],
+    partIds: {
+      cpu: 'cpu-rune12',
+      motherboard: 'mb-glyph-b650',
+      ram: 'ram-64-ddr5',
+      gpu: 'gpu-4070s',
+      storage: 'sto-nvme-2tb',
+      cooler: 'cool-aio240',
+      psu: 'psu-850',
+      case: 'case-tower',
+    },
+  },
+  {
+    id: 'sowilo',
+    series: 'rune',
+    category: 'gaming',
+    rune: { key: 'sowilo', meaning: 'Sun' },
+    tier: 'Flagship · 4K',
+    name: 'Sowilo',
+    blurb: 'The flagship. 4K ultra with headroom to spare and nothing held back.',
+    targetRes: '2160',
+    headlineGames: ['cyberpunk', 'blackmyth', 'starfield'],
+    partIds: {
+      cpu: 'cpu-x3d8',
+      motherboard: 'mb-glyph-x670',
+      ram: 'ram-64-ddr5',
+      gpu: 'gpu-4090',
+      storage: 'sto-nvme-2tb',
+      cooler: 'cool-aio360',
+      psu: 'psu-1000',
+      case: 'case-elite',
+    },
+  },
 ]
+
+export function presetInCategory(preset, categoryKey) {
+  if (categoryKey === 'all') return true
+  if (categoryKey === 'rune') return preset.series === 'rune'
+  return preset.category === categoryKey
+}

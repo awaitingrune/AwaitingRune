@@ -4,3 +4,7 @@
   aspect-ratio: 240 / 300;
   filter: drop-shadow(0 12px 24px -12px var(--purple-glow));
 }
+
+.pc-tower.is-no-case .pc-tower__case {
+  opacity: 0.55;
+}

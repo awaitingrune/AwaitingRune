@@ -24,6 +24,7 @@ export const PARTS = {
     { id: 'cpu-rune12', name: 'AMD Ryzen 9 7900X', socket: 'AM5', tdp: 170, cores: 12, price: 429 },
     { id: 'cpu-iron6', name: 'Intel Core i5-13400F', socket: 'LGA1700', tdp: 65, cores: 10, price: 199 },
     { id: 'cpu-iron10', name: 'Intel Core i7-14700K', socket: 'LGA1700', tdp: 125, cores: 20, price: 409 },
+    { id: 'cpu-x3d8', name: 'AMD Ryzen 7 7800X3D', socket: 'AM5', tdp: 120, cores: 8, price: 449 },
   ],
   motherboard: [
     { id: 'mb-glyph-b650', name: 'ASUS ROG Strix B650-A Gaming WiFi', socket: 'AM5', ramType: 'DDR5', maxRamGB: 128, formFactor: 'ATX', price: 219 },
@@ -40,9 +41,12 @@ export const PARTS = {
   ],
   gpu: [
     { id: 'gpu-ember700', name: 'AMD Radeon RX 7600 8GB', tdp: 165, lengthMm: 224, vramGB: 8, price: 269 },
+    { id: 'gpu-4060', name: 'NVIDIA GeForce RTX 4060 8GB', tdp: 115, lengthMm: 240, vramGB: 8, price: 299 },
     { id: 'gpu-void90', name: 'NVIDIA GeForce RTX 4070 12GB', tdp: 200, lengthMm: 244, vramGB: 12, price: 549 },
     { id: 'gpu-ember800', name: 'AMD Radeon RX 7800 XT 16GB', tdp: 263, lengthMm: 280, vramGB: 16, price: 499 },
+    { id: 'gpu-4070s', name: 'NVIDIA GeForce RTX 4070 Super 12GB', tdp: 220, lengthMm: 244, vramGB: 12, price: 599 },
     { id: 'gpu-void90ti', name: 'NVIDIA GeForce RTX 4080 Super 16GB', tdp: 320, lengthMm: 304, vramGB: 16, price: 999 },
+    { id: 'gpu-4090', name: 'NVIDIA GeForce RTX 4090 24GB', tdp: 450, lengthMm: 304, vramGB: 24, price: 1599 },
   ],
   storage: [
     { id: 'sto-sata-1tb', name: 'Crucial MX500 1TB SATA SSD', capacityGB: 1000, price: 59 },

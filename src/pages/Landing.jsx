@@ -131,7 +131,7 @@ export default function Landing() {
 
         <div className="showcase__panel card">
           <div className="showcase__image" key={`img-${active.id}`}>
-            <PCTower tier={active.id} />
+            <PCTower build={resolveBuild(active.partIds)} />
           </div>
           <div className="showcase__info" key={`info-${active.id}`}>
             {active.featured && <span className="prebuilt__badge">Most popular</span>}

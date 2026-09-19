@@ -3,7 +3,13 @@ import { useLocation } from 'react-router-dom'
 import { CATEGORIES, PARTS, findPart } from '../data/parts.js'
 import { evaluateBuild } from '../utils/compatibility.js'
 import { startCheckout } from '../utils/checkout.js'
+import { RIG_IMAGES } from '../data/rigImages.js'
+import PCTower from '../components/PCTower.jsx'
 import './CustomBuild.css'
+
+function shortName(name) {
+  return name.replace(/^(NVIDIA GeForce |AMD Radeon |AMD |Intel )/, '')
+}
 
 function specLine(key, part) {
   switch (key) {
@@ -143,6 +149,35 @@ export default function CustomBuild() {
 
         <aside className="build-summary card">
           <h3>Your build</h3>
+
+          <div className="build-preview">
+            <div className="build-preview__stage">
+              {build.case && RIG_IMAGES[build.case.id] ? (
+                <img
+                  className="build-preview__photo"
+                  src={RIG_IMAGES[build.case.id]}
+                  alt={`${build.case.name} case`}
+                  decoding="async"
+                />
+              ) : (
+                <PCTower build={build} />
+              )}
+            </div>
+            <p className="build-preview__caption">
+              {build.case ? build.case.name : 'Pick a case to start'}
+            </p>
+            {(build.cpu || build.gpu || build.ram) && (
+              <ul className="build-preview__chips">
+                {build.cpu && <li className="tag">{shortName(build.cpu.name)}</li>}
+                {build.gpu && <li className="tag">{shortName(build.gpu.name)}</li>}
+                {build.ram && (
+                  <li className="tag">
+                    {build.ram.capacityGB}GB {build.ram.type}
+                  </li>
+                )}
+              </ul>
+            )}
+          </div>
 
           <ul className="build-summary__list">
             {CATEGORIES.map((cat) => {

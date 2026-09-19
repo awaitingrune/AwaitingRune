@@ -1,0 +1,29 @@
+.rig-visual {
+  width: 130px;
+  margin: 4px auto 6px;
+}
+
+.rig-visual--photo {
+  width: 100%;
+  aspect-ratio: 5 / 4;
+  margin: 0 0 14px;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #09090c;
+}
+
+.rig-visual--photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, #000 6%, #000 94%, transparent),
+    linear-gradient(to bottom, transparent, #000 4%, #000 96%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent, #000 6%, #000 94%, transparent),
+    linear-gradient(to bottom, transparent, #000 4%, #000 96%, transparent);
+  mask-composite: intersect;
+}

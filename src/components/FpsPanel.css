@@ -1,0 +1,157 @@
+.fps {
+  margin: 0 0 20px;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-1);
+}
+
+.fps__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.fps__title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--purple-200);
+}
+
+.fps__tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--purple-300);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.fps__chip {
+  font-size: 0.68rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 3px 9px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+.fps__chip--good,
+.fps__fill--good {
+  color: var(--success);
+  border-color: rgba(74, 222, 128, 0.35);
+  background: rgba(74, 222, 128, 0.1);
+}
+
+.fps__chip--warn,
+.fps__fill--warn {
+  color: var(--warning);
+  border-color: rgba(251, 191, 36, 0.35);
+  background: rgba(251, 191, 36, 0.1);
+}
+
+.fps__chip--bad,
+.fps__fill--bad {
+  color: var(--error);
+  border-color: rgba(248, 113, 113, 0.35);
+  background: rgba(248, 113, 113, 0.1);
+}
+
+.fps__list,
+.fps__bars {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fps__list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.82rem;
+}
+
+.fps__game {
+  color: var(--text);
+}
+
+.fps__num {
+  font-family: var(--heading);
+  font-weight: 700;
+}
+
+.fps__num--good {
+  color: var(--success);
+}
+
+.fps__num--warn {
+  color: var(--warning);
+}
+
+.fps__num--bad {
+  color: var(--error);
+}
+
+.fps__bars li {
+  display: grid;
+  grid-template-columns: 42px 1fr 38px;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+
+.fps__bars li.is-selected {
+  opacity: 1;
+}
+
+.fps__res {
+  color: var(--text-dim);
+}
+
+.fps__bar {
+  display: block;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--bg-3);
+  overflow: hidden;
+}
+
+.fps__fill {
+  display: block;
+  height: 100%;
+  border: none;
+  border-radius: 999px;
+}
+
+.fps__fill--good {
+  background: var(--success);
+}
+
+.fps__fill--warn {
+  background: var(--warning);
+}
+
+.fps__fill--bad {
+  background: var(--error);
+}
+
+.fps__val {
+  text-align: right;
+  font-family: var(--heading);
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.fps__note {
+  margin: 10px 0 0;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}

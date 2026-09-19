@@ -190,3 +190,187 @@
     align-items: stretch;
   }
 }
+
+/* ---- game finder ---- */
+.finder {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px 32px;
+  padding: 24px 28px;
+  margin-bottom: 28px;
+}
+
+.finder__copy h2 {
+  font-size: 1.3rem;
+  margin: 8px 0 4px;
+}
+
+.finder__copy p {
+  margin: 0;
+  max-width: 420px;
+  font-size: 0.9rem;
+}
+
+.finder__controls {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.finder__field,
+.finder__res {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.finder__label {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.finder__field select {
+  min-width: 250px;
+  background: var(--bg-1);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  color: var(--text-h);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.finder__field select:focus {
+  outline: none;
+  border-color: var(--purple-400);
+}
+
+.finder__pills {
+  display: flex;
+  gap: 8px;
+}
+
+.finder__clear {
+  background: none;
+  border: none;
+  padding: 10px 4px;
+  color: var(--purple-300);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ---- Rune Series banner ---- */
+.series {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 22px;
+  margin: 0 0 28px;
+  padding: 16px 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, rgba(168, 85, 247, 0.14), transparent 75%);
+}
+
+.series__runes {
+  display: flex;
+  gap: 14px;
+  color: var(--purple-300);
+  filter: drop-shadow(0 0 6px var(--purple-glow));
+}
+
+.series__subtitle {
+  margin: 0;
+  font-family: var(--heading);
+  font-size: 1.2rem;
+  letter-spacing: 0.5px;
+  color: var(--text-h);
+}
+
+/* ---- card additions ---- */
+.prebuilt__badge {
+  white-space: nowrap;
+}
+
+.prebuilt__badge--value {
+  right: auto;
+  left: 24px;
+  max-width: calc(100% - 48px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+}
+
+.prebuilt.is-featured .prebuilt__badge--value {
+  max-width: calc(100% - 150px);
+}
+
+.prebuilt__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0 4px;
+}
+
+.prebuilt__title h2 {
+  margin: 0;
+}
+
+.prebuilt__rune {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong);
+  background: rgba(168, 85, 247, 0.12);
+  color: var(--purple-200);
+  box-shadow: 0 0 14px -4px var(--purple-glow);
+}
+
+.prebuilt__meaning {
+  margin: 0 0 10px;
+  font-family: var(--heading);
+  font-size: 0.68rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--purple-300);
+}
+
+.prebuilt.is-below-target {
+  opacity: 0.8;
+}
+
+.prebuilts__footnote {
+  max-width: 780px;
+  margin: 36px auto 0;
+  text-align: center;
+  font-size: 0.76rem;
+  color: var(--text-dim);
+}
+
+@media (max-width: 980px) {
+  .finder {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .finder__controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .finder__field select {
+    min-width: 0;
+    width: 100%;
+  }
+}
