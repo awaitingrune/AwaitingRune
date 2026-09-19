@@ -60,6 +60,17 @@ function isOptionIncompatible(key, option, build) {
   }
 }
 
+const STEP_LABELS = {
+  cpu: 'CPU',
+  motherboard: 'Board',
+  ram: 'RAM',
+  gpu: 'GPU',
+  storage: 'Storage',
+  cooler: 'Cooler',
+  psu: 'PSU',
+  case: 'Case',
+}
+
 const EMPTY_SELECTION = Object.fromEntries(CATEGORIES.map((c) => [c.key, null]))
 
 export default function CustomBuild() {
@@ -78,6 +89,10 @@ export default function CustomBuild() {
   )
 
   const evaluation = useMemo(() => evaluateBuild(build), [build])
+
+  const pickedCount = CATEGORIES.filter((c) => build[c.key]).length
+  const percent = Math.round((pickedCount / CATEGORIES.length) * 100)
+  const isDone = pickedCount === CATEGORIES.length
 
   function handleSelect(key, id) {
     setSelectedIds((prev) => ({ ...prev, [key]: prev[key] === id ? null : id }))
@@ -112,12 +127,50 @@ export default function CustomBuild() {
         <p>Pick a part in each category. Price and compatibility update automatically as you go.</p>
       </div>
 
+      <div className="build-progress" role="group" aria-label="Build progress">
+        <div className="build-progress__top">
+          <span className="build-progress__label">
+            {isDone ? 'Build complete' : `${pickedCount} of ${CATEGORIES.length} parts chosen`}
+          </span>
+          <span className="build-progress__pct">{percent}%</span>
+        </div>
+        <div
+          className={`build-progress__track ${isDone ? 'is-done' : ''}`}
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={percent}
+          aria-label="Build completion"
+        >
+          <div className="build-progress__fill" style={{ width: `${percent}%` }} />
+        </div>
+        <ol className="build-progress__steps">
+          {CATEGORIES.map((cat) => (
+            <li key={cat.key}>
+              <a
+                href={`#cat-${cat.key}`}
+                className={`build-progress__step ${build[cat.key] ? 'is-done' : ''}`}
+                onClick={(e) => {
+                  e.preventDefault()
+                  document.getElementById(`cat-${cat.key}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                }}
+              >
+                <span className="build-progress__dot" aria-hidden="true">
+                  {build[cat.key] ? '✓' : ''}
+                </span>
+                {STEP_LABELS[cat.key]}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+
       <div className="build-page__layout">
         <div className="build-page__categories">
           {CATEGORIES.map((cat) => {
             const selected = build[cat.key]
             return (
-              <section key={cat.key} className="build-cat card">
+              <section key={cat.key} id={`cat-${cat.key}`} className="build-cat card">
                 <div className="build-cat__head">
                   <h3>{cat.label}</h3>
                   {selected && <span className="tag">{selected.name}</span>}
@@ -149,6 +202,13 @@ export default function CustomBuild() {
 
         <aside className="build-summary card">
           <h3>Your build</h3>
+
+          <div className="build-summary__progress" aria-hidden="true">
+            <div className={`build-progress__track ${isDone ? 'is-done' : ''}`}>
+              <div className="build-progress__fill" style={{ width: `${percent}%` }} />
+            </div>
+            <span>{percent}%</span>
+          </div>
 
           <div className="build-preview">
             <div className="build-preview__stage">

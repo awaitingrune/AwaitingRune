@@ -302,3 +302,156 @@
     overflow-y: auto;
   }
 }
+
+/* ---- build progress ---- */
+.build-progress {
+  position: sticky;
+  top: 76px;
+  z-index: 30;
+  margin: 0 0 24px;
+  padding: 14px 18px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(14, 11, 24, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.build-progress__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+}
+
+.build-progress__label {
+  color: var(--text-h);
+  font-weight: 600;
+}
+
+.build-progress__pct {
+  font-family: var(--heading);
+  color: var(--purple-300);
+}
+
+.build-progress__track {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.build-progress__fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--purple-600), var(--purple-300));
+  box-shadow: 0 0 12px var(--purple-glow);
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.build-progress__track.is-done .build-progress__fill {
+  background: linear-gradient(90deg, #15803d, #4ade80);
+  box-shadow: 0 0 12px rgba(74, 222, 128, 0.5);
+}
+
+.build-progress__steps {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+}
+
+.build-progress__step {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.build-progress__step:hover {
+  color: var(--text-h);
+}
+
+.build-progress__step.is-done {
+  color: var(--text-h);
+}
+
+.build-progress__dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  font-size: 0.6rem;
+  line-height: 1;
+  color: white;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.build-progress__step.is-done .build-progress__dot {
+  background: var(--purple-500);
+  border-color: var(--purple-400);
+}
+
+.build-cat {
+  scroll-margin-top: 190px;
+}
+
+@media (max-width: 600px) {
+  .build-progress {
+    padding: 10px 12px 8px;
+  }
+
+  .build-progress__steps {
+    display: none;
+  }
+}
+
+/* Desktop: the page bar scrolls away, so the sticky summary carries a compact copy. */
+.build-summary__progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: -6px;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.build-summary__progress .build-progress__track {
+  flex: 1;
+  height: 6px;
+}
+
+.build-summary__progress span {
+  font-family: var(--heading);
+  color: var(--purple-300);
+}
+
+@media (min-width: 981px) {
+  .build-progress {
+    position: static;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--bg-2, rgba(20, 16, 34, 0.6));
+  }
+
+  .build-cat {
+    scroll-margin-top: 96px;
+  }
+}
+
+@media (max-width: 980px) {
+  .build-summary__progress {
+    display: none;
+  }
+}
