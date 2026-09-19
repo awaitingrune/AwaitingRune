@@ -321,6 +321,8 @@
 
 .prebuilt__title h2 {
   margin: 0;
+  font-size: 1.45rem;
+  line-height: 1.15;
 }
 
 .prebuilt__rune {

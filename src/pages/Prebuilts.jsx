@@ -182,13 +182,17 @@ export default function Prebuilts() {
                 <span className="tag">{preset.tier}</span>
                 <div className="prebuilt__title">
                   {preset.rune && (
-                    <span className="prebuilt__rune" title={`Rune of ${preset.rune.meaning.toLowerCase()}`}>
+                    <span className="prebuilt__rune" title={`${preset.rune.label} — ${preset.rune.meaning.toLowerCase()}`}>
                       <RuneGlyph name={preset.rune.key} size={22} />
                     </span>
                   )}
                   <h2>{preset.name}</h2>
                 </div>
-                {preset.rune && <p className="prebuilt__meaning">Rune of {preset.rune.meaning.toLowerCase()}</p>}
+                {preset.rune && (
+                  <p className="prebuilt__meaning">
+                    {preset.rune.label} &middot; {preset.rune.meaning}
+                  </p>
+                )}
                 <p className="prebuilt__blurb">{preset.blurb}</p>
 
                 <FpsPanel

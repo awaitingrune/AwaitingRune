@@ -80,7 +80,7 @@ export default function PCTower({ build = {}, className = '' }) {
 
   return (
     <svg
-      className={`pc-tower ${pcCase ? '' : 'is-no-case'} ${className}`}
+      className={`pc-tower ${pcCase ? '' : 'is-no-case'} ${pcCase?.quiet ? 'is-quiet' : ''} ${className}`}
       viewBox="0 0 240 300"
       role="img"
       aria-label="Illustration of the selected PC build"

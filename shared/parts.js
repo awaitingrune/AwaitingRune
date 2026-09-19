@@ -32,6 +32,7 @@ export const PARTS = {
     { id: 'mb-sigil-b650m', name: 'MSI B650M Mortar WiFi', socket: 'AM5', ramType: 'DDR5', maxRamGB: 96, formFactor: 'mATX', price: 189 },
     { id: 'mb-ward-z790', name: 'ASUS ROG Strix Z790-E Gaming WiFi', socket: 'LGA1700', ramType: 'DDR5', maxRamGB: 128, formFactor: 'ATX', price: 329 },
     { id: 'mb-ward-b760m', name: 'MSI PRO B760M-A WiFi DDR4', socket: 'LGA1700', ramType: 'DDR4', maxRamGB: 64, formFactor: 'mATX', price: 139 },
+    { id: 'mb-pro-b650', name: 'MSI PRO B650-P WiFi', socket: 'AM5', ramType: 'DDR5', maxRamGB: 128, formFactor: 'ATX', price: 179, quiet: true },
   ],
   ram: [
     { id: 'ram-16-ddr5', name: 'Corsair Vengeance 16GB (2x8GB) DDR5-6000', type: 'DDR5', capacityGB: 16, price: 54 },
@@ -56,6 +57,7 @@ export const PARTS = {
   cooler: [
     { id: 'cool-air', name: 'Cooler Master Hyper 212 Black Edition', sockets: ['AM5', 'LGA1700'], tdpRatingW: 150, price: 35 },
     { id: 'cool-air-pro', name: 'Thermalright Peerless Assassin 120 SE', sockets: ['AM5', 'LGA1700'], tdpRatingW: 245, price: 45 },
+    { id: 'cool-noctua', name: 'Noctua NH-D15 chromax.black', sockets: ['AM5', 'LGA1700'], tdpRatingW: 250, price: 109, quiet: true },
     { id: 'cool-aio240', name: 'Corsair iCUE H100i Elite Capellix (240mm AIO)', sockets: ['AM5', 'LGA1700'], tdpRatingW: 250, price: 130 },
     { id: 'cool-aio360', name: 'Corsair iCUE H150i Elite Capellix (360mm AIO)', sockets: ['AM5', 'LGA1700'], tdpRatingW: 350, price: 179 },
   ],
@@ -64,11 +66,13 @@ export const PARTS = {
     { id: 'psu-650', name: 'Corsair RM650x 650W 80+ Gold', wattage: 650, price: 99 },
     { id: 'psu-850', name: 'Corsair RM850x 850W 80+ Gold', wattage: 850, price: 139 },
     { id: 'psu-1000', name: 'Corsair HX1000 1000W 80+ Platinum', wattage: 1000, price: 219 },
+    { id: 'psu-quiet-750', name: 'be quiet! Straight Power 12 750W 80+ Platinum', wattage: 750, price: 159, quiet: true },
   ],
   case: [
     { id: 'case-mini', name: 'Cooler Master MasterBox Q300L', formFactors: ['mATX'], maxGpuLengthMm: 320, price: 49 },
     { id: 'case-tower', name: 'NZXT H510 Flow', formFactors: ['ATX', 'mATX'], maxGpuLengthMm: 360, price: 94 },
     { id: 'case-elite', name: 'Lian Li O11 Dynamic EVO', formFactors: ['ATX', 'mATX'], maxGpuLengthMm: 420, price: 169 },
+    { id: 'case-silent', name: 'Fractal Design Define 7', formFactors: ['ATX', 'mATX'], maxGpuLengthMm: 315, price: 179, quiet: true },
   ],
 }
 

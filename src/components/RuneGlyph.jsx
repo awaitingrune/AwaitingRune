@@ -7,6 +7,7 @@ const RUNES = {
   kenaz: 'M17 5 L8 12 L17 19',
   tiwaz: 'M12 3 V21 M6 9 L12 3 L18 9',
   sowilo: 'M15 3 L9 10 L15 14 L9 21',
+  perthro: 'M7 3 V21 M7 3 L16 8 V16 L7 21',
 }
 
 export const RUNE_KEYS = Object.keys(RUNES)

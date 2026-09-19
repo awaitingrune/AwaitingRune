@@ -8,3 +8,8 @@
 .pc-tower.is-no-case .pc-tower__case {
   opacity: 0.55;
 }
+
+/* Silent cases show the build with the RGB glow switched off. */
+.pc-tower.is-quiet {
+  filter: saturate(0.12) brightness(0.92);
+}
