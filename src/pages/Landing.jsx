@@ -12,27 +12,6 @@ import './Landing.css'
 
 const ROTATE_MS = 4500
 
-const FEATURES = [
-  {
-    title: 'Forge Your Own',
-    body: 'Pick every component yourself. Prices total live, and every socket, wattage, and clearance rule is checked as you go.',
-    to: '/custom-build',
-    cta: 'Start a build',
-  },
-  {
-    title: 'Curated Prebuilts',
-    body: 'Not sure where to start? Grab one of our hand-tuned rigs, built and tested to a known-good spec.',
-    to: '/prebuilts',
-    cta: 'Browse prebuilts',
-  },
-  {
-    title: 'Real Human Help',
-    body: 'Stuck with anything? Reach out any time and talk to someone live who can help.',
-    to: '/about',
-    cta: 'Get in touch',
-  },
-]
-
 const STEPS = [
   { n: '01', title: 'Choose your parts', body: 'CPU, motherboard, RAM, GPU, storage, cooler, PSU, and case.' },
   { n: '02', title: 'We check compatibility', body: 'Sockets, RAM type, wattage, and case clearance verified automatically.' },
@@ -95,16 +74,6 @@ export default function Landing() {
             decoding="async"
           />
         </div>
-      </section>
-
-      <section className="container features">
-        {FEATURES.map((f) => (
-          <Link key={f.title} to={f.to} className="card feature">
-            <h3>{f.title}</h3>
-            <p>{f.body}</p>
-            <span className="feature__cta">{f.cta} &rarr;</span>
-          </Link>
-        ))}
       </section>
 
       <section className="container why">
