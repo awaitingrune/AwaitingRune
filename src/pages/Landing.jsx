@@ -7,6 +7,7 @@ import RigVisual from '../components/RigVisual.jsx'
 import ImageDisclaimer from '../components/ImageDisclaimer.jsx'
 import RuneGlyph, { RUNE_KEYS } from '../components/RuneGlyph.jsx'
 import { useQuiz } from '../components/QuizProvider.jsx'
+import { useCustomize } from '../components/CustomizeProvider.jsx'
 import { formatPrice } from '../utils/format.js'
 import pcShowcase from '../assets/pc-showcase.webp'
 import { PREBUILTS, PREBUILT_CATEGORIES, resolveBuild } from '../data/prebuilts.js'
@@ -41,6 +42,7 @@ const SAMPLE_BUILD = (() => {
 
 export default function Landing() {
   const { openQuiz } = useQuiz()
+  const { openCustomize } = useCustomize()
   const [activeIndex, setActiveIndex] = useState(0)
 
   useEffect(() => {
@@ -131,9 +133,9 @@ export default function Landing() {
             <p>{active.blurb}</p>
             <div className="showcase__foot">
               <span className="showcase__price">{formatPrice(activeEvaluation.subtotal)}</span>
-              <Link to="/custom-build" state={{ presetIds: active.partIds }} className="btn btn-primary">
+              <button type="button" className="btn btn-primary" onClick={() => openCustomize(active)}>
                 Customize
-              </Link>
+              </button>
             </div>
           </div>
         </div>

@@ -1,0 +1,345 @@
+.cz {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 16px;
+  background: rgba(5, 3, 10, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: czFade 0.22s ease both;
+}
+
+.cz__panel {
+  position: relative;
+  width: 100%;
+  max-width: 1120px;
+  max-height: calc(100svh - 48px);
+  overflow-y: auto;
+  padding: 32px;
+  transform-origin: 30% 40%;
+  animation: czZoom 0.38s cubic-bezier(0.2, 0.9, 0.25, 1) both;
+}
+
+.cz__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-1);
+  color: var(--text-h);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.cz__close:hover {
+  border-color: var(--purple-400);
+}
+
+.cz__layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 36px;
+  align-items: start;
+}
+
+.cz__side {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.cz__visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 14px 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: radial-gradient(70% 70% at 50% 40%, rgba(124, 58, 237, 0.26), transparent 78%), var(--bg-1);
+  animation: czZoomIn 0.55s cubic-bezier(0.2, 0.9, 0.25, 1) 0.08s both;
+}
+
+.cz__visual .rig-visual--photo {
+  max-width: 100%;
+  margin-bottom: 0;
+}
+
+.cz__tower {
+  width: min(250px, 80%);
+}
+
+.cz__caption {
+  margin: 0;
+  text-align: center;
+  font-size: 0.74rem;
+  color: var(--text-dim);
+}
+
+.cz__summary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cz__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cz__title h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.cz__price {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+}
+
+.cz__total {
+  font-family: var(--heading);
+  font-size: 2.2rem;
+  line-height: 1.1;
+  color: var(--text-h);
+  animation: czPop 0.35s ease;
+}
+
+.cz__delta {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+
+.cz__delta.is-up {
+  color: var(--warning);
+}
+
+.cz__delta.is-down {
+  color: var(--success);
+}
+
+.cz__power {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.76rem;
+  color: var(--text-dim);
+}
+
+.cz__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cz__hint {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--error);
+}
+
+.cz__heading {
+  margin: 8px 0 6px;
+  font-size: 1.6rem;
+}
+
+.cz__lead {
+  margin: 0 0 20px;
+  font-size: 0.92rem;
+}
+
+.cz__parts {
+  list-style: none;
+  margin: 0 0 24px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cz-part {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-1);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.cz-part.is-changed {
+  border-color: var(--purple-400);
+  background: linear-gradient(180deg, rgba(168, 85, 247, 0.16), rgba(168, 85, 247, 0.05));
+}
+
+.cz-part__label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.cz-part__flag {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--purple-500);
+  font-size: 0.62rem;
+  color: white;
+}
+
+.cz-part__select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-0);
+  color: var(--text-h);
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.cz-part__select:focus {
+  outline: none;
+  border-color: var(--purple-400);
+}
+
+.cz-part__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.76rem;
+  color: var(--text-dim);
+}
+
+.cz-part__price {
+  font-family: var(--heading);
+  color: var(--purple-300);
+}
+
+.cz-part__was {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+
+.cz__insights {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.cz__builtfor {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text-h);
+}
+
+.cz__builtfor li {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.cz__builtfor li::before {
+  content: '';
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--purple-400);
+}
+
+@keyframes czFade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* The whole panel and then the PC inside it zoom in, so opening it feels
+   like moving closer to the machine. */
+@keyframes czZoom {
+  from {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+}
+
+@keyframes czZoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.78);
+  }
+}
+
+@keyframes czPop {
+  from {
+    opacity: 0.4;
+    transform: scale(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cz,
+  .cz__panel,
+  .cz__visual,
+  .cz__total {
+    animation: none;
+  }
+}
+
+@media (max-width: 980px) {
+  .cz__layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .cz__side {
+    position: static;
+  }
+
+  .cz__insights {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .cz {
+    padding: 0;
+  }
+
+  .cz__panel {
+    max-height: 100svh;
+    min-height: 100svh;
+    border-radius: 0;
+    padding: 56px 16px 28px;
+  }
+
+  .cz__close {
+    top: 10px;
+    right: 10px;
+  }
+}

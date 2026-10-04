@@ -5,7 +5,6 @@ import './NavBar.css'
 
 const LINKS = [
   { to: '/prebuilts', label: 'Prebuilts' },
-  { to: '/custom-build', label: 'Custom Build' },
   { to: '/about', label: 'About & Contact' },
 ]
 

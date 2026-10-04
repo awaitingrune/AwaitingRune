@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import NavBar from './components/NavBar.jsx'
 import Footer from './components/Footer.jsx'
 import QuizProvider from './components/QuizProvider.jsx'
+import CustomizeProvider from './components/CustomizeProvider.jsx'
 import Landing from './pages/Landing.jsx'
 import CustomBuild from './pages/CustomBuild.jsx'
 import Prebuilts from './pages/Prebuilts.jsx'
@@ -29,6 +30,7 @@ function ScrollManager() {
 export default function App() {
   return (
     <BrowserRouter>
+      <CustomizeProvider>
       <QuizProvider>
       <ScrollManager />
       <NavBar />
@@ -44,6 +46,7 @@ export default function App() {
       </main>
       <Footer />
       </QuizProvider>
+      </CustomizeProvider>
     </BrowserRouter>
   )
 }

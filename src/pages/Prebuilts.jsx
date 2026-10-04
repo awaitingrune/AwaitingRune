@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { CATEGORIES } from '../data/parts.js'
 import { GAMES, GENRES, RESOLUTIONS, findGame } from '../data/games.js'
 import { PREBUILTS, PREBUILT_CATEGORIES, presetInCategory, resolveBuild } from '../data/prebuilts.js'
@@ -7,6 +6,7 @@ import { evaluateBuild } from '../utils/compatibility.js'
 import { rankForGame, performanceFor } from '../utils/fps.js'
 import { startCheckout } from '../utils/checkout.js'
 import { formatPrice } from '../utils/format.js'
+import { useCustomize } from '../components/CustomizeProvider.jsx'
 import RigVisual from '../components/RigVisual.jsx'
 import ImageDisclaimer from '../components/ImageDisclaimer.jsx'
 import FpsPanel from '../components/FpsPanel.jsx'
@@ -20,6 +20,7 @@ const BASE_SORTS = [
 ]
 
 export default function Prebuilts() {
+  const { openCustomize } = useCustomize()
   const [category, setCategory] = useState('all')
   const [sort, setSort] = useState('default')
   const [gameId, setGameId] = useState('')
@@ -243,9 +244,9 @@ export default function Prebuilts() {
                 <div className="prebuilt__foot">
                   <span className="prebuilt__price">{formatPrice(evaluation.subtotal)}</span>
                   <div className="prebuilt__actions">
-                    <Link to="/custom-build" state={{ presetIds: preset.partIds }} className="btn">
+                    <button type="button" className="btn" onClick={() => openCustomize(preset)}>
                       Customize
-                    </Link>
+                    </button>
                     <button
                       type="button"
                       className="btn btn-primary"

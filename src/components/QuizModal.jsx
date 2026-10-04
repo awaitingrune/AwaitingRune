@@ -4,6 +4,7 @@ import { GAMES, GENRES } from '../data/games.js'
 import { BUDGETS, PREFS, SCREENS, USES, recommend, usesGaming } from '../utils/recommend.js'
 import { formatPrice } from '../utils/format.js'
 import { startCheckout } from '../utils/checkout.js'
+import { useCustomize } from './CustomizeProvider.jsx'
 import RigVisual from '../components/RigVisual.jsx'
 import ImageDisclaimer from '../components/ImageDisclaimer.jsx'
 import FpsPanel from '../components/FpsPanel.jsx'
@@ -32,7 +33,7 @@ function Option({ selected, onClick, title, desc, multi }) {
   )
 }
 
-function ResultCard({ rig, reasons, badge, note, games, resKey, use, big, onBuy, buying, error, onNavigate }) {
+function ResultCard({ rig, reasons, badge, note, games, resKey, use, big, onBuy, buying, error, onCustomize }) {
   const { preset, build, price } = rig
   const game = usesGaming(use) && games.length ? games[0] : null
 
@@ -100,9 +101,9 @@ function ResultCard({ rig, reasons, badge, note, games, resKey, use, big, onBuy,
         <div className="match__foot">
           <span className="prebuilt__price">{formatPrice(price)}</span>
           <div className="prebuilt__actions">
-            <Link to="/custom-build" state={{ presetIds: preset.partIds }} className="btn" onClick={onNavigate}>
+            <button type="button" className="btn" onClick={onCustomize}>
               Customize
-            </Link>
+            </button>
             {onBuy && (
               <button type="button" className="btn btn-primary" disabled={buying} onClick={onBuy}>
                 {buying ? 'Redirecting…' : 'Buy Now'}
@@ -116,6 +117,7 @@ function ResultCard({ rig, reasons, badge, note, games, resKey, use, big, onBuy,
 }
 
 export default function QuizModal({ onClose }) {
+  const { openCustomize } = useCustomize()
   const panelRef = useRef(null)
   const [answers, setAnswers] = useState(EMPTY)
   const [stepIndex, setStepIndex] = useState(0)
@@ -160,6 +162,12 @@ export default function QuizModal({ onClose }) {
     setFinished(false)
     setBuyState({ id: null, status: 'idle', error: null })
     panelRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  // Close the quiz, then zoom into the chosen PC to tweak its parts.
+  function customize(preset) {
+    onClose()
+    openCustomize(preset)
   }
 
   async function buy(preset) {
@@ -341,7 +349,7 @@ export default function QuizModal({ onClose }) {
             games={result.games}
             resKey={result.resKey}
             use={answers.use}
-            onNavigate={onClose}
+            onCustomize={() => customize(result.pick.preset)}
             onBuy={() => buy(result.pick.preset)}
             buying={buyState.id === result.pick.preset.id && buyState.status === 'loading'}
             error={buyState.id === result.pick.preset.id ? buyState.error : null}
@@ -360,8 +368,7 @@ export default function QuizModal({ onClose }) {
                     games={result.games}
                     resKey={result.resKey}
                     use={answers.use}
-
-                    onNavigate={onClose}
+                    onCustomize={() => customize(alt.rig.preset)}
                   />
                 ))}
               </div>
