@@ -6,12 +6,17 @@
 // (GamersNexus), RTX 4080 Super ~36% over the 4070 Super and RTX 4090
 // ~28% over the 4080 Super (multi-game averages). The 4090 gains more at
 // 4K because it is CPU-limited at 1080p; 8GB cards lose ground at 4K.
+// RTX 5060 is roughly 20% over the 4060 (about RTX 4060 Ti level) and the
+// RTX 5070 a few percent over the 4070 Super; reviews of the 50 series vary
+// by game, so treat both as approximate.
 export const GPU_PERF = {
   'gpu-4060': { 1080: 0.64, 1440: 0.6, 2160: 0.53 },
+  'gpu-5060': { 1080: 0.76, 1440: 0.73, 2160: 0.63 },
   'gpu-ember700': { 1080: 0.62, 1440: 0.57, 2160: 0.5 },
   'gpu-void90': { 1080: 1, 1440: 1, 2160: 1 },
   'gpu-ember800': { 1080: 1.1, 1440: 1.13, 2160: 1.17 },
   'gpu-4070s': { 1080: 1.14, 1440: 1.17, 2160: 1.18 },
+  'gpu-5070': { 1080: 1.18, 1440: 1.22, 2160: 1.26 },
   'gpu-void90ti': { 1080: 1.42, 1440: 1.55, 2160: 1.62 },
   'gpu-4090': { 1080: 1.65, 1440: 1.98, 2160: 2.2 },
 }

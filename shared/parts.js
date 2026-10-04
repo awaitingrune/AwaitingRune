@@ -43,9 +43,11 @@ export const PARTS = {
   gpu: [
     { id: 'gpu-ember700', name: 'AMD Radeon RX 7600 8GB', tdp: 165, lengthMm: 224, vramGB: 8, price: 269 },
     { id: 'gpu-4060', name: 'NVIDIA GeForce RTX 4060 8GB', tdp: 115, lengthMm: 240, vramGB: 8, price: 299 },
+    { id: 'gpu-5060', name: 'NVIDIA GeForce RTX 5060 8GB', tdp: 145, lengthMm: 240, vramGB: 8, price: 289 },
     { id: 'gpu-void90', name: 'NVIDIA GeForce RTX 4070 12GB', tdp: 200, lengthMm: 244, vramGB: 12, price: 549 },
     { id: 'gpu-ember800', name: 'AMD Radeon RX 7800 XT 16GB', tdp: 263, lengthMm: 280, vramGB: 16, price: 499 },
     { id: 'gpu-4070s', name: 'NVIDIA GeForce RTX 4070 Super 12GB', tdp: 220, lengthMm: 244, vramGB: 12, price: 599 },
+    { id: 'gpu-5070', name: 'NVIDIA GeForce RTX 5070 12GB', tdp: 250, lengthMm: 242, vramGB: 12, price: 549 },
     { id: 'gpu-void90ti', name: 'NVIDIA GeForce RTX 4080 Super 16GB', tdp: 320, lengthMm: 304, vramGB: 16, price: 999 },
     { id: 'gpu-4090', name: 'NVIDIA GeForce RTX 4090 24GB', tdp: 450, lengthMm: 304, vramGB: 24, price: 1599 },
   ],
