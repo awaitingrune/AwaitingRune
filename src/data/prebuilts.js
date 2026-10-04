@@ -160,7 +160,7 @@ export const PREBUILTS = [
     series: 'rune',
     category: 'gaming',
     rune: { key: 'uruz', label: 'Uruz', meaning: 'Strength' },
-    tier: 'Raster power · 1440p',
+    tier: 'Raw power · 1440p',
     name: 'Rune of Power',
     blurb: 'Raw horsepower and 16GB of VRAM for maxed-out 1440p in the big open worlds.',
     targetRes: '1440',
