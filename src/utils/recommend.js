@@ -1,5 +1,5 @@
 import { findGame, RESOLUTIONS } from '../data/games.js'
-import { GPU_PERF } from '../data/performance.js'
+import { CPU_MT, GPU_PERF } from '../data/performance.js'
 import { PREBUILTS, resolveBuild } from '../data/prebuilts.js'
 import { evaluateBuild } from './compatibility.js'
 import { estimateFps } from './fps.js'
@@ -64,9 +64,9 @@ function gamingScore(build, games, resKey) {
 function creatorScore(build) {
   const gpuIdx = GPU_PERF[build.gpu?.id]?.['1440'] ?? 0.5
   return (
-    0.5 * clamp((build.cpu?.cores ?? 0) / 20, 1) +
+    0.5 * (CPU_MT[build.cpu?.id] ?? 0.3) +
     0.3 * clamp((build.ram?.capacityGB ?? 0) / 64, 1) +
-    0.2 * clamp(gpuIdx / 1.98, 1)
+    0.2 * clamp(gpuIdx / 2.4, 1)
   )
 }
 
@@ -94,7 +94,8 @@ function scoreRig(rig, answers, games, resKey) {
       fit = 0.6 * gaming.score + 0.4 * clamp((rig.build.cpu?.cores ?? 0) / 16, 1)
       break
     case 'create':
-      fit = creator
+      // Rigs built as workstations get a small edge for creative work.
+      fit = creator + (rig.preset.category === 'workstation' ? 0.04 : 0)
       break
     case 'mix':
       fit = 0.6 * gaming.score + 0.4 * creator
@@ -110,7 +111,7 @@ function explain(scored, answers, resKey, budgetMax) {
   const { build, price } = scored
   const reasons = []
 
-  if (scored.gaming) {
+  if (scored.gaming && scored.preset.category !== 'workstation') {
     const label = RESOLUTIONS.find((r) => r.key === resKey)?.label
     const { rows, hits } = scored.gaming
     reasons.push(
@@ -156,19 +157,25 @@ export function recommend(answers) {
     return { preset, build, evaluation, price: evaluation.subtotal }
   }).map((rig) => scoreRig(rig, answers, games, resKey))
 
-  const affordable = rigs.filter((r) => r.price <= budgetMax)
+  // Workstations are tuned for editing and rendering and never show game
+  // frame rates, so anyone who plays games is pointed at the gaming rigs.
+  const candidates = usesGaming(answers.use)
+    ? rigs.filter((r) => r.preset.category !== 'workstation')
+    : rigs
+
+  const affordable = candidates.filter((r) => r.price <= budgetMax)
   const overBudget = affordable.length === 0
-  const pool = overBudget ? [[...rigs].sort((a, b) => a.price - b.price)[0]] : affordable
+  const pool = overBudget ? [[...candidates].sort((a, b) => a.price - b.price)[0]] : affordable
 
   const topFit = Math.max(...pool.map((r) => r.fit))
   const pick = pool
     .filter((r) => r.fit >= topFit - 0.03)
     .sort((a, b) => a.price - b.price)[0]
 
-  const cheaper = rigs
+  const cheaper = candidates
     .filter((r) => r.price <= pick.price * 0.9)
     .sort((a, b) => b.fit - a.fit || a.price - b.price)[0]
-  const stronger = rigs
+  const stronger = candidates
     .filter((r) => r.fit > pick.fit + 0.03 && r.price > pick.price)
     .sort((a, b) => a.price - b.price)[0]
 

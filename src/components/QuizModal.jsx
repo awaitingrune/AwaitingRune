@@ -62,7 +62,18 @@ function ResultCard({ rig, reasons, badge, note, games, resKey, use, big, onBuy,
           </ul>
         )}
 
-        {big && (
+        {big && preset.category === 'workstation' && (
+          <div className="workload">
+            <span className="workload__title">Built for</span>
+            <ul>
+              {preset.builtFor.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {big && preset.category !== 'workstation' && usesGaming(use) && (
           <FpsPanel
             build={build}
             game={game}

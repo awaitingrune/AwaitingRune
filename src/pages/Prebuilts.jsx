@@ -36,11 +36,16 @@ export default function Prebuilts() {
       return { preset, build, evaluation: evaluateBuild(build) }
     })
 
+    // Workstations are built for editing and rendering, so they are never
+    // scored on game frame rates. They sit after the ranked gaming rigs.
+    const gamingRigs = filtered.filter((r) => r.preset.category !== 'workstation')
+    const workstations = filtered.filter((r) => r.preset.category === 'workstation')
+
     const chosenGame = findGame(gameId)
-    const ranking = chosenGame ? rankForGame(filtered, chosenGame, resKey) : { ordered: filtered, bestValueId: null }
+    const ranking = chosenGame ? rankForGame(gamingRigs, chosenGame, resKey) : { ordered: filtered, bestValueId: null }
 
     let ordered = filtered
-    if (sort === 'best' && chosenGame) ordered = ranking.ordered
+    if (sort === 'best' && chosenGame) ordered = [...ranking.ordered, ...workstations]
     else if (sort === 'price-asc') ordered = [...filtered].sort((a, b) => a.evaluation.subtotal - b.evaluation.subtotal)
     else if (sort === 'price-desc') ordered = [...filtered].sort((a, b) => b.evaluation.subtotal - a.evaluation.subtotal)
 
@@ -79,7 +84,7 @@ export default function Prebuilts() {
         <div className="finder__copy">
           <span className="eyebrow">Game finder</span>
           <h2>What are you playing?</h2>
-          <p>Pick a game and we&rsquo;ll estimate the frame rate on every rig, then flag the best value for it.</p>
+          <p>Pick a game and we&rsquo;ll estimate the frame rate on every gaming rig, then flag the best value for it.</p>
         </div>
         <div className="finder__controls">
           <label className="finder__field">
@@ -165,8 +170,9 @@ export default function Prebuilts() {
       ) : (
         <div className="prebuilts__grid">
           {rigs.map(({ preset, build, evaluation }) => {
-            const perf = game ? performanceFor(game, build) : null
-            const belowTarget = game && perf?.[resKey] && perf[resKey].fps < game.target
+            const isWorkstation = preset.category === 'workstation'
+            const perf = game && !isWorkstation ? performanceFor(game, build) : null
+            const belowTarget = perf?.[resKey] && perf[resKey].fps < game.target
 
             return (
               <div
@@ -178,7 +184,7 @@ export default function Prebuilts() {
                 )}
                 {preset.featured && <span className="prebuilt__badge">Most popular</span>}
 
-                <RigVisual id={preset.id} build={build} alt={`${preset.name} custom gaming PC`} />
+                <RigVisual id={preset.id} build={build} alt={`${preset.name} custom PC`} />
 
                 <span className="tag">{preset.tier}</span>
                 <div className="prebuilt__title">
@@ -196,13 +202,24 @@ export default function Prebuilts() {
                 )}
                 <p className="prebuilt__blurb">{preset.blurb}</p>
 
-                <FpsPanel
-                  build={build}
-                  game={game}
-                  resKey={resKey}
-                  headlineGames={preset.headlineGames}
-                  targetRes={preset.targetRes}
-                />
+                {isWorkstation ? (
+                  <div className="workload">
+                    <span className="workload__title">Built for</span>
+                    <ul>
+                      {preset.builtFor.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : (
+                  <FpsPanel
+                    build={build}
+                    game={game}
+                    resKey={resKey}
+                    headlineGames={preset.headlineGames}
+                    targetRes={preset.targetRes}
+                  />
+                )}
 
                 <ul className="prebuilt__specs">
                   {CATEGORIES.map((cat) => {
