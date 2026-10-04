@@ -4,6 +4,7 @@ import Logo from '../components/Logo.jsx'
 import FractureLines from '../components/FractureLines.jsx'
 import PCTower from '../components/PCTower.jsx'
 import RigVisual from '../components/RigVisual.jsx'
+import ImageDisclaimer from '../components/ImageDisclaimer.jsx'
 import RuneGlyph, { RUNE_KEYS } from '../components/RuneGlyph.jsx'
 import { useQuiz } from '../components/QuizProvider.jsx'
 import { formatPrice } from '../utils/format.js'
@@ -148,6 +149,8 @@ export default function Landing() {
             />
           ))}
         </div>
+
+        <ImageDisclaimer className="image-note--center showcase__note" />
       </section>
 
       <section className="why">

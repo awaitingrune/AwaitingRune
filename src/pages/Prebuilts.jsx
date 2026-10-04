@@ -8,6 +8,7 @@ import { rankForGame, performanceFor } from '../utils/fps.js'
 import { startCheckout } from '../utils/checkout.js'
 import { formatPrice } from '../utils/format.js'
 import RigVisual from '../components/RigVisual.jsx'
+import ImageDisclaimer from '../components/ImageDisclaimer.jsx'
 import FpsPanel from '../components/FpsPanel.jsx'
 import RuneGlyph, { RUNE_KEYS } from '../components/RuneGlyph.jsx'
 import './Prebuilts.css'
@@ -79,6 +80,8 @@ export default function Prebuilts() {
         <h1>Hand-tuned, ready to order</h1>
         <p>Every part already checked for compatibility. Customize any of them further.</p>
       </div>
+
+      <ImageDisclaimer />
 
       <section className="finder card" aria-label="Game finder">
         <div className="finder__copy">

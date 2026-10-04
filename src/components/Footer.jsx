@@ -145,6 +145,11 @@ export default function Footer() {
           <Vine />
         </div>
 
+        <p className="footer__images">
+          Some images on this site are AI interpretations of finished builds, shown for reference only. Real photos are
+          coming soon.
+        </p>
+
         <div className="footer__base">
           <span>Secure payments by Stripe</span>
           <span>&copy; {new Date().getFullYear()} AwaitingRune</span>

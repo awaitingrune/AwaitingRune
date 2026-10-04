@@ -171,3 +171,11 @@
 .footer__linkbtn:hover {
   color: var(--purple-200);
 }
+
+.footer__images {
+  margin: 0;
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  opacity: 0.8;
+}

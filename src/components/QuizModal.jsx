@@ -5,6 +5,7 @@ import { BUDGETS, PREFS, SCREENS, USES, recommend, usesGaming } from '../utils/r
 import { formatPrice } from '../utils/format.js'
 import { startCheckout } from '../utils/checkout.js'
 import RigVisual from '../components/RigVisual.jsx'
+import ImageDisclaimer from '../components/ImageDisclaimer.jsx'
 import FpsPanel from '../components/FpsPanel.jsx'
 import RuneGlyph from '../components/RuneGlyph.jsx'
 import { CATEGORIES } from '../data/parts.js'
@@ -378,6 +379,7 @@ export default function QuizModal({ onClose }) {
               See every prebuilt
             </Link>
           </div>
+          <ImageDisclaimer className="quiz__image-note" />
           <p className="quiz__footnote">
             Frame rates are estimates from published benchmark averages. Delivery, warranty and returns are covered on
             the <Link to="/support" onClick={onClose}>support page</Link>.

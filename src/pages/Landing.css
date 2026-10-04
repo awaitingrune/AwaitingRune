@@ -527,3 +527,8 @@
     font-size: 1.6rem;
   }
 }
+
+.showcase__note {
+  margin-top: 24px;
+  margin-bottom: 0;
+}

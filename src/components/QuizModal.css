@@ -429,3 +429,7 @@
     max-width: none;
   }
 }
+
+.quiz__image-note {
+  margin: 24px 0 0;
+}

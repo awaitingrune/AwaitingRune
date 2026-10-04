@@ -3,7 +3,25 @@
   margin: 4px auto 6px;
 }
 
+.rig-visual__badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: rgba(9, 9, 12, 0.75);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--purple-200);
+  pointer-events: none;
+}
+
 .rig-visual--photo {
+  position: relative;
   width: 100%;
   max-width: 400px;
   aspect-ratio: 1 / 1;
