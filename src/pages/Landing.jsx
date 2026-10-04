@@ -37,7 +37,7 @@ export default function Landing() {
       <section className="hero">
         <div className="container hero__inner">
           <div className="hero__ring" aria-hidden="true">
-            <Logo size={220} />
+            <Logo size={253} />
           </div>
           <span className="eyebrow">Custom PCs, built right</span>
           <h1>
