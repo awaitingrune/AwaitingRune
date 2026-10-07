@@ -343,3 +343,8 @@
     right: 10px;
   }
 }
+
+.cz__breakdown {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}

@@ -113,6 +113,9 @@ export default function CustomizeModal({ preset, onClose }) {
                 <span key={evaluation.subtotal} className="cz__total">
                   {formatPrice(evaluation.subtotal)}
                 </span>
+                <span className="cz__breakdown">
+                  Parts {formatPrice(evaluation.partsTotal)} + build &amp; test {formatPrice(evaluation.labour)}
+                </span>
                 <span className={`cz__delta ${delta > 0 ? 'is-up' : delta < 0 ? 'is-down' : ''}`}>
                   {modified
                     ? delta === 0

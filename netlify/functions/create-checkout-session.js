@@ -1,5 +1,5 @@
 import Stripe from 'stripe'
-import { CATEGORIES, findPart } from '../../shared/parts.js'
+import { CATEGORIES, LABOUR, findPart } from '../../shared/parts.js'
 import { evaluateBuild } from '../../shared/compatibility.js'
 
 function jsonResponse(status, body) {
@@ -59,20 +59,33 @@ export default async (req) => {
   try {
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
-      line_items: CATEGORIES.map((cat) => {
-        const part = build[cat.key]
-        return {
+      line_items: [
+        ...CATEGORIES.map((cat) => {
+          const part = build[cat.key]
+          return {
+            quantity: 1,
+            price_data: {
+              currency: 'gbp',
+              unit_amount: Math.round(part.price * 100),
+              product_data: {
+                name: part.name,
+                description: cat.label,
+              },
+            },
+          }
+        }),
+        {
           quantity: 1,
           price_data: {
             currency: 'gbp',
-            unit_amount: Math.round(part.price * 100),
+            unit_amount: Math.round(LABOUR.price * 100),
             product_data: {
-              name: part.name,
-              description: cat.label,
+              name: LABOUR.name,
+              description: LABOUR.includes.join(', '),
             },
           },
-        }
-      }),
+        },
+      ],
       shipping_address_collection: { allowed_countries: ['GB'] },
       phone_number_collection: { enabled: true },
       success_url: `${siteUrl}/order-confirmed?session_id={CHECKOUT_SESSION_ID}`,

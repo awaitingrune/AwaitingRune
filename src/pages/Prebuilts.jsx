@@ -247,7 +247,10 @@ export default function Prebuilts() {
                 )}
 
                 <div className="prebuilt__foot">
-                  <span className="prebuilt__price">{formatPrice(evaluation.subtotal)}</span>
+                  <span className="prebuilt__price">
+                    {formatPrice(evaluation.subtotal)}
+                    <small className="prebuilt__incl">includes {formatPrice(evaluation.labour)} build &amp; test</small>
+                  </span>
                   <div className="prebuilt__actions">
                     <button type="button" className="btn" onClick={() => openCustomize(preset)}>
                       Customize

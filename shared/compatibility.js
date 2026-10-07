@@ -1,3 +1,5 @@
+import { LABOUR } from './parts.js'
+
 const BASELINE_DRAW_W = 90 // fans, storage, motherboard, RGB, etc.
 const PSU_SAFETY_MARGIN = 1.2 // recommended headroom above estimated draw
 const PSU_MIN_MARGIN = 1.0 // hard minimum before we call it insufficient
@@ -86,7 +88,10 @@ export function evaluateBuild(build) {
     .filter(([, part]) => !part)
     .map(([key]) => key)
 
-  const subtotal = Object.values(parts).reduce((sum, part) => sum + (part?.price ?? 0), 0)
+  const partsTotal = Object.values(parts).reduce((sum, part) => sum + (part?.price ?? 0), 0)
+  // The build & test fee applies once any part has been chosen.
+  const labour = partsTotal > 0 ? LABOUR.price : 0
+  const subtotal = partsTotal + labour
   const errorCount = issues.filter((i) => i.level === 'error').length
   const warningCount = issues.filter((i) => i.level === 'warning').length
 
@@ -99,6 +104,8 @@ export function evaluateBuild(build) {
     warningCount,
     estimatedDrawW,
     recommendedW,
+    partsTotal,
+    labour,
     subtotal,
   }
 }

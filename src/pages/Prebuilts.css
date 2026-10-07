@@ -420,3 +420,12 @@
     width: 100%;
   }
 }
+
+.prebuilt__incl {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--text-dim);
+}

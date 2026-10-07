@@ -375,6 +375,11 @@ export default function CustomBuild() {
                 <span>Your Rune so far</span>
                 <strong key={evaluation.subtotal}>{formatPrice(evaluation.subtotal)}</strong>
               </div>
+              {evaluation.partsTotal > 0 && (
+                <p className="forge-rune__breakdown">
+                  Parts {formatPrice(evaluation.partsTotal)} + build &amp; test {formatPrice(evaluation.labour)}
+                </p>
+              )}
 
               <div className="forge-rune__details">
                 <div className="forge-rune__line">
@@ -442,6 +447,9 @@ export default function CustomBuild() {
           <PerformanceLine build={build} />
 
           <div className="reveal__price">{formatPrice(evaluation.subtotal)}</div>
+          <p className="reveal__breakdown">
+            Parts {formatPrice(evaluation.partsTotal)} + build &amp; test {formatPrice(evaluation.labour)}
+          </p>
 
           {checkout.status === 'error' && checkout.error && <div className="issue issue--error">{checkout.error}</div>}
 
