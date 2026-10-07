@@ -348,3 +348,11 @@
   font-size: 0.78rem;
   color: var(--text-dim);
 }
+
+.cz__extras {
+  margin-bottom: 24px;
+}
+
+.cz__extras .cz__heading {
+  margin-top: 0;
+}

@@ -5,6 +5,7 @@ import Footer from './components/Footer.jsx'
 import TrustStrip from './components/TrustStrip.jsx'
 import QuizProvider from './components/QuizProvider.jsx'
 import CustomizeProvider from './components/CustomizeProvider.jsx'
+import CheckoutProvider from './components/CheckoutProvider.jsx'
 import Landing from './pages/Landing.jsx'
 import CustomBuild from './pages/CustomBuild.jsx'
 import Prebuilts from './pages/Prebuilts.jsx'
@@ -31,6 +32,7 @@ function ScrollManager() {
 export default function App() {
   return (
     <BrowserRouter>
+      <CheckoutProvider>
       <CustomizeProvider>
       <QuizProvider>
       <ScrollManager />
@@ -49,6 +51,7 @@ export default function App() {
       <Footer />
       </QuizProvider>
       </CustomizeProvider>
+      </CheckoutProvider>
     </BrowserRouter>
   )
 }

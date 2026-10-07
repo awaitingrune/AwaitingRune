@@ -3,7 +3,7 @@ import Logo from '../Logo.jsx'
 import RuneGlyph from '../RuneGlyph.jsx'
 
 const PILLARS = [
-  { rune: 'uruz', title: 'Warranty', body: '12 months covering parts and labour, plus each manufacturer’s own warranty.' },
+  { rune: 'uruz', title: 'Warranty', body: '12 months covering parts and labour, extendable to 3 years, plus each manufacturer’s own warranty.' },
   { rune: 'tiwaz', title: 'Testing', body: 'Every PC runs under load before it ships, not just powered on.' },
   { rune: 'ansuz', title: 'Support', body: 'A real person to ask, any time of day. No ticket queue.' },
   { rune: 'sowilo', title: 'Quality', body: 'Branded parts, matched properly and checked for compatibility.' },

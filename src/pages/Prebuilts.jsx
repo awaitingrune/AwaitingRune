@@ -2,12 +2,12 @@ import { useMemo, useState } from 'react'
 import usePageMeta from '../utils/usePageMeta.js'
 import { CATEGORIES } from '../data/parts.js'
 import { GAMES, GENRES, RESOLUTIONS, findGame } from '../data/games.js'
-import { PREBUILTS, PREBUILT_CATEGORIES, presetInCategory, resolveBuild } from '../data/prebuilts.js'
+import { PREBUILTS, PREBUILT_CATEGORIES, presetInCategory, presetOs, presetPrice, resolveBuild } from '../data/prebuilts.js'
 import { evaluateBuild } from '../utils/compatibility.js'
 import { rankForGame, performanceFor } from '../utils/fps.js'
-import { startCheckout } from '../utils/checkout.js'
 import { formatPrice } from '../utils/format.js'
 import { useCustomize } from '../components/CustomizeProvider.jsx'
+import { useCheckout } from '../components/CheckoutProvider.jsx'
 import RigVisual from '../components/RigVisual.jsx'
 import ImageDisclaimer from '../components/ImageDisclaimer.jsx'
 import FpsPanel from '../components/FpsPanel.jsx'
@@ -26,6 +26,7 @@ export default function Prebuilts() {
     description: "We have a rune for everything. Browse prebuilt gaming and workstation PCs with FPS estimates, then customise any part before you buy.",
   })
   const { openCustomize } = useCustomize()
+  const { checkout } = useCheckout()
   const [category, setCategory] = useState('all')
   const [sort, setSort] = useState('default')
   const [gameId, setGameId] = useState('')
@@ -40,7 +41,8 @@ export default function Prebuilts() {
   const { rigs, bestValueId } = useMemo(() => {
     const filtered = PREBUILTS.filter((preset) => presetInCategory(preset, category)).map((preset) => {
       const build = resolveBuild(preset.partIds)
-      return { preset, build, evaluation: evaluateBuild(build) }
+      const evaluation = evaluateBuild(build)
+      return { preset, build, evaluation, price: presetPrice(preset, evaluation) }
     })
 
     // Workstations are built for editing and rendering, so they are never
@@ -53,8 +55,8 @@ export default function Prebuilts() {
 
     let ordered = filtered
     if (sort === 'best' && chosenGame) ordered = [...ranking.ordered, ...workstations]
-    else if (sort === 'price-asc') ordered = [...filtered].sort((a, b) => a.evaluation.subtotal - b.evaluation.subtotal)
-    else if (sort === 'price-desc') ordered = [...filtered].sort((a, b) => b.evaluation.subtotal - a.evaluation.subtotal)
+    else if (sort === 'price-asc') ordered = [...filtered].sort((a, b) => a.price - b.price)
+    else if (sort === 'price-desc') ordered = [...filtered].sort((a, b) => b.price - a.price)
 
     return { rigs: ordered, bestValueId: ranking.bestValueId }
   }, [category, sort, gameId, resKey])
@@ -64,16 +66,22 @@ export default function Prebuilts() {
     setSort(id ? 'best' : sort === 'best' ? 'default' : sort)
   }
 
-  async function handleBuyNow(preset) {
+  async function handleBuyNow(preset, price) {
     setBuyState((prev) => ({ ...prev, [preset.id]: 'loading' }))
     setBuyError((prev) => ({ ...prev, [preset.id]: null }))
     try {
-      await startCheckout({
+      await checkout({
         selections: preset.partIds,
         buildName: preset.name,
         cancelPath: '/prebuilts',
+        extras: { os: presetOs(preset).id, warranty: 'war-std' },
+        total: price,
       })
     } catch (err) {
+      if (err?.cancelled) {
+        setBuyState((prev) => ({ ...prev, [preset.id]: null }))
+        return
+      }
       setBuyState((prev) => ({ ...prev, [preset.id]: 'error' }))
       setBuyError((prev) => ({ ...prev, [preset.id]: err.message }))
     }
@@ -178,7 +186,7 @@ export default function Prebuilts() {
         <p className="prebuilts__empty">No rigs in this category yet.</p>
       ) : (
         <div className="prebuilts__grid">
-          {rigs.map(({ preset, build, evaluation }) => {
+          {rigs.map(({ preset, build, evaluation, price }) => {
             const isWorkstation = preset.category === 'workstation'
             const perf = game && !isWorkstation ? performanceFor(game, build) : null
             const belowTarget = perf?.[resKey] && perf[resKey].fps < game.target
@@ -240,6 +248,10 @@ export default function Prebuilts() {
                       </li>
                     )
                   })}
+                  <li>
+                    <span>Operating system</span>
+                    <span>{presetOs(preset).short === 'None' ? 'None' : `${presetOs(preset).short} (installed)`}</span>
+                  </li>
                 </ul>
 
                 {buyState[preset.id] === 'error' && buyError[preset.id] && (
@@ -248,8 +260,10 @@ export default function Prebuilts() {
 
                 <div className="prebuilt__foot">
                   <span className="prebuilt__price">
-                    {formatPrice(evaluation.subtotal)}
-                    <small className="prebuilt__incl">includes {formatPrice(evaluation.labour)} build &amp; test</small>
+                    {formatPrice(price)}
+                    <small className="prebuilt__incl">
+                      includes {presetOs(preset).short} and {formatPrice(evaluation.labour)} build &amp; test
+                    </small>
                   </span>
                   <div className="prebuilt__actions">
                     <button type="button" className="btn" onClick={() => openCustomize(preset)}>
@@ -259,7 +273,7 @@ export default function Prebuilts() {
                       type="button"
                       className="btn btn-primary"
                       disabled={buyState[preset.id] === 'loading'}
-                      onClick={() => handleBuyNow(preset)}
+                      onClick={() => handleBuyNow(preset, price)}
                     >
                       {buyState[preset.id] === 'loading' ? 'Redirecting…' : 'Buy Now'}
                     </button>

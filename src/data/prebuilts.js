@@ -1,4 +1,15 @@
 import { CATEGORIES, findPart } from './parts.js'
+import { DEFAULT_OS, findOs } from './extras.js'
+
+// Every prebuilt ships with Windows 11 Home installed unless the buyer changes
+// it, so its price includes the licence.
+export function presetOs(preset) {
+  return findOs(preset.os ?? DEFAULT_OS)
+}
+
+export function presetPrice(preset, evaluation) {
+  return evaluation.subtotal + presetOs(preset).price
+}
 
 export function resolveBuild(partIds) {
   return Object.fromEntries(CATEGORIES.map((c) => [c.key, findPart(c.key, partIds[c.key])]))

@@ -32,7 +32,7 @@ export default function TrustStrip() {
           </Icon>
           <span>
             <strong>12 month warranty</strong>
-            <small>Parts and labour covered on every build</small>
+            <small>Parts and labour covered. Extend to 3 years when you order</small>
           </span>
         </Link>
         <Link to="/support#returns" className="trust-strip__item">

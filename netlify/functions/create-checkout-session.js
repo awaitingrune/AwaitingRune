@@ -1,6 +1,7 @@
 import Stripe from 'stripe'
 import { CATEGORIES, LABOUR, findPart } from '../../shared/parts.js'
 import { evaluateBuild } from '../../shared/compatibility.js'
+import { UPSELL, priceExtras } from '../../shared/extras.js'
 
 function jsonResponse(status, body) {
   return new Response(JSON.stringify(body), {
@@ -51,6 +52,57 @@ export default async (req) => {
     })
   }
 
+  // Optional extras (Windows, extended warranty, the storage offer). They are
+  // priced here from the shared tables, never from anything the browser sends.
+  const requested = payload?.extras ?? {}
+  const extras = priceExtras({
+    buildTotal: evaluation.subtotal,
+    osId: requested.os ?? 'os-none',
+    warrantyId: requested.warranty ?? 'war-std',
+    upsell: requested.upsell === true,
+  })
+  if (!extras) {
+    return jsonResponse(400, { error: 'Invalid operating system or warranty option.' })
+  }
+
+  const extraLines = []
+  if (extras.osPrice > 0) {
+    extraLines.push({
+      quantity: 1,
+      price_data: {
+        currency: 'gbp',
+        unit_amount: Math.round(extras.osPrice * 100),
+        product_data: { name: `${extras.os.name} (installed and activated)`, description: 'Operating system' },
+      },
+    })
+  }
+  if (extras.warrantyPrice > 0) {
+    extraLines.push({
+      quantity: 1,
+      price_data: {
+        currency: 'gbp',
+        unit_amount: Math.round(extras.warrantyPrice * 100),
+        product_data: {
+          name: `Extended warranty: ${extras.warranty.years} years in total`,
+          description: `Adds ${extras.warranty.extraYears} year${extras.warranty.extraYears > 1 ? 's' : ''} to the standard 12 month warranty`,
+        },
+      },
+    })
+  }
+  if (extras.upsellPrice > 0) {
+    extraLines.push({
+      quantity: 1,
+      price_data: {
+        currency: 'gbp',
+        unit_amount: Math.round(extras.upsellPrice * 100),
+        product_data: {
+          name: `${UPSELL.name} (${UPSELL.product})`,
+          description: `${UPSELL.discount * 100}% off checkout offer`,
+        },
+      },
+    })
+  }
+
   const siteUrl = process.env.URL || new URL(req.url).origin
   const safeCancelPath = typeof cancelPath === 'string' && cancelPath.startsWith('/') ? cancelPath : '/custom-build'
 
@@ -85,6 +137,7 @@ export default async (req) => {
             },
           },
         },
+        ...extraLines,
       ],
       shipping_address_collection: { allowed_countries: ['GB'] },
       phone_number_collection: { enabled: true },
@@ -93,6 +146,9 @@ export default async (req) => {
       metadata: {
         buildName: typeof buildName === 'string' ? buildName.slice(0, 200) : 'Custom Build',
         selections: JSON.stringify(selections).slice(0, 450),
+        os: extras.os.id,
+        warranty: extras.warranty.id,
+        extraStorage: extras.upsellPrice > 0 ? 'yes' : 'no',
       },
     })
 

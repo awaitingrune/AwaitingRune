@@ -1,8 +1,10 @@
-export async function startCheckout({ selections, buildName, cancelPath }) {
+// Creates a Stripe Checkout session on the server and sends the browser to it.
+// `extras` is { os, warranty, upsell }; the server prices them itself.
+export async function startCheckout({ selections, buildName, cancelPath, extras }) {
   const res = await fetch('/.netlify/functions/create-checkout-session', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ selections, buildName, cancelPath }),
+    body: JSON.stringify({ selections, buildName, cancelPath, extras }),
   })
 
   let data

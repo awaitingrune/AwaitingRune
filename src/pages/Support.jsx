@@ -76,6 +76,10 @@ export default function Support() {
             Not covered: physical damage, liquid damage, accidents, and faults caused by modifications that were not
             done by me.
           </li>
+          <li>
+            You can extend the warranty to <strong>2 or 3 years</strong> when you order. It covers the same things as
+            the standard warranty, and costs a small extra that depends on the price of your PC.
+          </li>
           <li>This sits on top of your legal rights, it does not replace them.</li>
         </ul>
       </section>

@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { CATEGORIES, PARTS, findPart } from '../data/parts.js'
 import { RIG_IMAGES } from '../data/rigImages.js'
-import { resolveBuild } from '../data/prebuilts.js'
+import { presetOs, resolveBuild } from '../data/prebuilts.js'
+import { priceExtras } from '../data/extras.js'
 import { evaluateBuild } from '../utils/compatibility.js'
-import { startCheckout } from '../utils/checkout.js'
 import { formatPrice } from '../utils/format.js'
 import { isOptionIncompatible, shortName, specLine } from '../utils/partOptions.js'
 import PCTower from './PCTower.jsx'
@@ -11,6 +11,8 @@ import RigVisual from './RigVisual.jsx'
 import RuneGlyph from './RuneGlyph.jsx'
 import CompatibilityChecker from './CompatibilityChecker.jsx'
 import BuildPerformance from './BuildPerformance.jsx'
+import ExtrasPicker from './ExtrasPicker.jsx'
+import { useCheckout } from './CheckoutProvider.jsx'
 import './CustomizeModal.css'
 
 function signedPrice(amount) {
@@ -22,7 +24,11 @@ function signedPrice(amount) {
 // parts, and the server re-checks compatibility and prices them again.
 export default function CustomizeModal({ preset, onClose }) {
   const closeRef = useRef(null)
+  const { checkout: runCheckout } = useCheckout()
   const [selected, setSelected] = useState(preset.partIds)
+  const defaultOs = presetOs(preset).id
+  const [osId, setOsId] = useState(defaultOs)
+  const [warrantyId, setWarrantyId] = useState('war-std')
   const [checkout, setCheckout] = useState({ status: 'idle', error: null })
 
   const original = useMemo(() => evaluateBuild(resolveBuild(preset.partIds)), [preset])
@@ -31,10 +37,14 @@ export default function CustomizeModal({ preset, onClose }) {
     [selected]
   )
   const evaluation = useMemo(() => evaluateBuild(build), [build])
+  const extras = priceExtras({ buildTotal: evaluation.subtotal, osId, warrantyId })
+  const total = extras.total
+  const originalTotal = original.subtotal + presetOs(preset).price
 
   const changedKeys = CATEGORIES.filter((c) => selected[c.key] !== preset.partIds[c.key]).map((c) => c.key)
   const modified = changedKeys.length > 0
-  const delta = evaluation.subtotal - original.subtotal
+  const extrasChanged = osId !== defaultOs || warrantyId !== 'war-std'
+  const delta = total - originalTotal
   const isWorkstation = preset.category === 'workstation'
   const hasPhoto = Boolean(RIG_IMAGES[preset.id])
 
@@ -56,18 +66,26 @@ export default function CustomizeModal({ preset, onClose }) {
 
   function reset() {
     setSelected(preset.partIds)
+    setOsId(defaultOs)
+    setWarrantyId('war-std')
     setCheckout({ status: 'idle', error: null })
   }
 
   async function buy() {
     setCheckout({ status: 'loading', error: null })
     try {
-      await startCheckout({
+      await runCheckout({
         selections: selected,
         buildName: modified ? `${preset.name} (customised)` : preset.name,
         cancelPath: window.location.pathname,
+        extras: { os: osId, warranty: warrantyId },
+        total,
       })
     } catch (err) {
+      if (err?.cancelled) {
+        setCheckout({ status: 'idle', error: null })
+        return
+      }
       setCheckout({ status: 'error', error: err.message })
     }
   }
@@ -110,17 +128,19 @@ export default function CustomizeModal({ preset, onClose }) {
               </div>
 
               <div className="cz__price">
-                <span key={evaluation.subtotal} className="cz__total">
-                  {formatPrice(evaluation.subtotal)}
+                <span key={total} className="cz__total">
+                  {formatPrice(total)}
                 </span>
                 <span className="cz__breakdown">
                   Parts {formatPrice(evaluation.partsTotal)} + build &amp; test {formatPrice(evaluation.labour)}
+                  {extras.osPrice > 0 && ` + ${extras.os.short} ${formatPrice(extras.osPrice)}`}
+                  {extras.warrantyPrice > 0 && ` + ${extras.warranty.years} year warranty ${formatPrice(extras.warrantyPrice)}`}
                 </span>
                 <span className={`cz__delta ${delta > 0 ? 'is-up' : delta < 0 ? 'is-down' : ''}`}>
-                  {modified
+                  {modified || extrasChanged
                     ? delta === 0
                       ? 'Same price as the original'
-                      : `${signedPrice(delta)} from the original ${formatPrice(original.subtotal)}`
+                      : `${signedPrice(delta)} from the original ${formatPrice(originalTotal)}`
                     : 'Original spec'}
                 </span>
               </div>
@@ -139,10 +159,10 @@ export default function CustomizeModal({ preset, onClose }) {
                   {checkout.status === 'loading'
                     ? 'Redirecting…'
                     : modified
-                      ? `Buy customised build · ${formatPrice(evaluation.subtotal)}`
-                      : `Buy Now · ${formatPrice(evaluation.subtotal)}`}
+                      ? `Buy customised build · ${formatPrice(total)}`
+                      : `Buy Now · ${formatPrice(total)}`}
                 </button>
-                {modified && (
+                {(modified || extrasChanged) && (
                   <button type="button" className="btn btn-block" onClick={reset}>
                     Reset to original
                   </button>
@@ -206,6 +226,24 @@ export default function CustomizeModal({ preset, onClose }) {
                 )
               })}
             </ul>
+
+            <div className="cz__extras">
+              <h3 className="cz__heading">Finishing touches</h3>
+              <ExtrasPicker
+                idPrefix="cz"
+                os={osId}
+                onOs={(id) => {
+                  setOsId(id)
+                  setCheckout({ status: 'idle', error: null })
+                }}
+                warranty={warrantyId}
+                onWarranty={(id) => {
+                  setWarrantyId(id)
+                  setCheckout({ status: 'idle', error: null })
+                }}
+                buildTotal={evaluation.subtotal}
+              />
+            </div>
 
             <div className="cz__insights">
               <CompatibilityChecker build={build} />

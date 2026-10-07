@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { GAMES, RESOLUTIONS } from '../../data/games.js'
-import { PREBUILTS, resolveBuild } from '../../data/prebuilts.js'
+import { PREBUILTS, presetPrice, resolveBuild } from '../../data/prebuilts.js'
 import { evaluateBuild } from '../../utils/compatibility.js'
 import { RATINGS, estimateFps, rateFps } from '../../utils/fps.js'
 import { formatPrice } from '../../utils/format.js'
@@ -20,7 +20,7 @@ export default function WhatCanItRun() {
 
   const preset = RIGS.find((p) => p.id === rigId) ?? RIGS[0]
   const build = resolveBuild(preset.partIds)
-  const price = evaluateBuild(build).subtotal
+  const price = presetPrice(preset, evaluateBuild(build))
   const resLabel = RESOLUTIONS.find((r) => r.key === resKey)?.label
 
   return (

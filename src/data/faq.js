@@ -15,8 +15,12 @@ export const FAQ = [
     a: 'They are estimates built from published benchmark averages for each graphics card and processor, at the settings shown and with no ray tracing or upscaling. Real results usually land within about 10 to 15% depending on drivers, game patches and the scene.',
   },
   {
+    q: 'Does my PC come with Windows?',
+    a: 'Every prebuilt comes with Windows 11 Home installed, updated and activated, and the price includes it. On a custom build you choose Windows 11 Home, Windows 11 Pro or no operating system, and the price changes to match. You can change the operating system on a prebuilt too when you press Customize.',
+  },
+  {
     q: 'What warranty do I get?',
-    a: 'Every PC has a 12 month warranty covering the build and every component in it, parts and labour. The individual parts also carry their own manufacturer warranties.',
+    a: 'Every PC has a 12 month warranty covering the build and every component in it, parts and labour. The individual parts also carry their own manufacturer warranties. You can extend it to 2 or 3 years when you order.',
   },
   {
     q: 'Can I return it or change my order?',

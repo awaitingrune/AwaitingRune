@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { PREBUILTS, PREBUILT_CATEGORIES, resolveBuild } from '../../data/prebuilts.js'
+import { PREBUILTS, PREBUILT_CATEGORIES, presetPrice, resolveBuild } from '../../data/prebuilts.js'
 import { evaluateBuild } from '../../utils/compatibility.js'
 import { formatPrice } from '../../utils/format.js'
 import { shortName } from '../../utils/partOptions.js'
@@ -32,7 +32,7 @@ export default function RuneSeries() {
       <div className="series-home__grid">
         {rigs.map((preset) => {
           const build = resolveBuild(preset.partIds)
-          const price = evaluateBuild(build).subtotal
+          const price = presetPrice(preset, evaluateBuild(build))
           return (
             <article key={preset.id} className="card series-card">
               <RigVisual id={preset.id} build={build} alt={`${preset.name} custom PC`} />

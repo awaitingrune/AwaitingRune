@@ -1,6 +1,6 @@
 import { findGame, RESOLUTIONS } from '../data/games.js'
 import { CPU_MT, GPU_PERF } from '../data/performance.js'
-import { PREBUILTS, resolveBuild } from '../data/prebuilts.js'
+import { PREBUILTS, presetPrice, resolveBuild } from '../data/prebuilts.js'
 import { evaluateBuild } from './compatibility.js'
 import { estimateFps } from './fps.js'
 import { formatPrice } from './format.js'
@@ -14,9 +14,9 @@ export const USES = [
 ]
 
 export const BUDGETS = [
-  { key: '1500', label: 'Up to £1,500', max: 1500 },
-  { key: '2750', label: 'Up to £2,750', max: 2750 },
-  { key: '3600', label: 'Up to £3,600', max: 3600 },
+  { key: '1750', label: 'Up to £1,750', max: 1750 },
+  { key: '3000', label: 'Up to £3,000', max: 3000 },
+  { key: '4000', label: 'Up to £4,000', max: 4000 },
   { key: '5000', label: 'Up to £5,000', max: 5000 },
   { key: 'any', label: 'No real limit', max: Infinity },
 ]
@@ -154,7 +154,7 @@ export function recommend(answers) {
   const rigs = PREBUILTS.map((preset) => {
     const build = resolveBuild(preset.partIds)
     const evaluation = evaluateBuild(build)
-    return { preset, build, evaluation, price: evaluation.subtotal }
+    return { preset, build, evaluation, price: presetPrice(preset, evaluation) }
   }).map((rig) => scoreRig(rig, answers, games, resKey))
 
   // Workstations are tuned for editing and rendering and never show game

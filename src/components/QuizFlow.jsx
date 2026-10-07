@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 import { GAMES, GENRES } from '../data/games.js'
 import { BUDGETS, PREFS, SCREENS, USES, recommend, usesGaming } from '../utils/recommend.js'
 import { formatPrice } from '../utils/format.js'
-import { startCheckout } from '../utils/checkout.js'
+import { presetOs } from '../data/prebuilts.js'
+import { useCheckout } from './CheckoutProvider.jsx'
 import { useCustomize } from './CustomizeProvider.jsx'
 import RigVisual from '../components/RigVisual.jsx'
 import ImageDisclaimer from '../components/ImageDisclaimer.jsx'
@@ -120,6 +121,7 @@ function ResultCard({ rig, reasons, badge, note, games, resKey, use, big, onBuy,
 // popup (QuizModal) and directly on the homepage (inline).
 export default function QuizFlow({ onClose, initialUse = null, inline = false }) {
   const { openCustomize } = useCustomize()
+  const { checkout } = useCheckout()
   const rootRef = useRef(null)
   const [answers, setAnswers] = useState(() => (initialUse ? { ...EMPTY, use: initialUse } : EMPTY))
   // Starting with the use already chosen skips straight to the next question.
@@ -173,11 +175,21 @@ export default function QuizFlow({ onClose, initialUse = null, inline = false })
     openCustomize(preset)
   }
 
-  async function buy(preset) {
+  async function buy(preset, price) {
     setBuyState({ id: preset.id, status: 'loading', error: null })
     try {
-      await startCheckout({ selections: preset.partIds, buildName: preset.name, cancelPath: window.location.pathname })
+      await checkout({
+        selections: preset.partIds,
+        buildName: preset.name,
+        cancelPath: window.location.pathname,
+        extras: { os: presetOs(preset).id, warranty: 'war-std' },
+        total: price,
+      })
     } catch (err) {
+      if (err?.cancelled) {
+        setBuyState({ id: null, status: 'idle', error: null })
+        return
+      }
       setBuyState({ id: preset.id, status: 'error', error: err.message })
     }
   }
@@ -355,7 +367,7 @@ export default function QuizFlow({ onClose, initialUse = null, inline = false })
             resKey={result.resKey}
             use={answers.use}
             onCustomize={() => customize(result.pick.preset)}
-            onBuy={() => buy(result.pick.preset)}
+            onBuy={() => buy(result.pick.preset, result.pick.price)}
             buying={buyState.id === result.pick.preset.id && buyState.status === 'loading'}
             error={buyState.id === result.pick.preset.id ? buyState.error : null}
           />

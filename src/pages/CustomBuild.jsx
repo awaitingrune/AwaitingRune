@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import usePageMeta from '../utils/usePageMeta.js'
 import { CATEGORIES, PARTS, findPart } from '../data/parts.js'
 import { evaluateBuild } from '../utils/compatibility.js'
-import { startCheckout } from '../utils/checkout.js'
+import { DEFAULT_OS, priceExtras } from '../data/extras.js'
 import { formatPrice } from '../utils/format.js'
 import { shortName, specLine } from '../utils/partOptions.js'
 import { clashReason, pickPsu } from '../utils/autoMatch.js'
@@ -11,6 +11,8 @@ import PCTower from '../components/PCTower.jsx'
 import RuneEmblem from '../components/RuneEmblem.jsx'
 import CompatibilityChecker from '../components/CompatibilityChecker.jsx'
 import BuildPerformance from '../components/BuildPerformance.jsx'
+import ExtrasPicker from '../components/ExtrasPicker.jsx'
+import { useCheckout } from '../components/CheckoutProvider.jsx'
 import './CustomBuild.css'
 import './Forge.css'
 
@@ -153,6 +155,10 @@ export default function CustomBuild() {
   const [stageIndex, setStageIndex] = useState(0)
   const [lastKey, setLastKey] = useState(null)
   const [checkout, setCheckout] = useState({ status: 'idle', error: null })
+  const { checkout: runCheckout } = useCheckout()
+  // Windows is on by default, as with every prebuilt; it can be switched off.
+  const [osId, setOsId] = useState(DEFAULT_OS)
+  const [warrantyId, setWarrantyId] = useState('war-std')
   const topRef = useRef(null)
 
   const chosen = useMemo(
@@ -169,6 +175,7 @@ export default function CustomBuild() {
   )
 
   const evaluation = useMemo(() => evaluateBuild(build), [build])
+  const extras = priceExtras({ buildTotal: evaluation.subtotal, osId, warrantyId })
 
   const doneCount = STAGES.filter((s) => chosen[s.key]).length
   const allChosen = doneCount === STAGES.length
@@ -216,6 +223,8 @@ export default function CustomBuild() {
   function restart() {
     setChoices(EMPTY)
     setPsuChoice(null)
+    setOsId(DEFAULT_OS)
+    setWarrantyId('war-std')
     setLastKey(null)
     setStageIndex(0)
     setCheckout({ status: 'idle', error: null })
@@ -229,12 +238,18 @@ export default function CustomBuild() {
   async function awaken() {
     setCheckout({ status: 'loading', error: null })
     try {
-      await startCheckout({
+      await runCheckout({
         selections: Object.fromEntries(CATEGORIES.map((c) => [c.key, build[c.key]?.id])),
         buildName: 'Custom Rune',
         cancelPath: '/custom-build',
+        extras: { os: osId, warranty: warrantyId },
+        total: extras.total,
       })
     } catch (err) {
+      if (err?.cancelled) {
+        setCheckout({ status: 'idle', error: null })
+        return
+      }
       setCheckout({ status: 'error', error: err.message })
     }
   }
@@ -446,9 +461,28 @@ export default function CustomBuild() {
 
           <PerformanceLine build={build} />
 
-          <div className="reveal__price">{formatPrice(evaluation.subtotal)}</div>
+          <div className="reveal__extras">
+            <ExtrasPicker
+              idPrefix="forge"
+              os={osId}
+              onOs={(id) => {
+                setOsId(id)
+                setCheckout({ status: 'idle', error: null })
+              }}
+              warranty={warrantyId}
+              onWarranty={(id) => {
+                setWarrantyId(id)
+                setCheckout({ status: 'idle', error: null })
+              }}
+              buildTotal={evaluation.subtotal}
+            />
+          </div>
+
+          <div className="reveal__price">{formatPrice(extras.total)}</div>
           <p className="reveal__breakdown">
             Parts {formatPrice(evaluation.partsTotal)} + build &amp; test {formatPrice(evaluation.labour)}
+            {extras.osPrice > 0 && ` + ${extras.os.short} ${formatPrice(extras.osPrice)}`}
+            {extras.warrantyPrice > 0 && ` + ${extras.warranty.years} year warranty ${formatPrice(extras.warrantyPrice)}`}
           </p>
 
           {checkout.status === 'error' && checkout.error && <div className="issue issue--error">{checkout.error}</div>}

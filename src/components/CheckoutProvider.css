@@ -1,0 +1,148 @@
+.upsell {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(5, 3, 10, 0.78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: upsellFade 0.2s ease both;
+}
+
+.upsell__card {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  padding: 28px 26px 22px;
+  text-align: center;
+  border-color: var(--purple-400);
+  box-shadow: 0 0 0 1px var(--purple-400), 0 24px 60px -16px var(--purple-glow);
+  animation: upsellPop 0.3s cubic-bezier(0.2, 0.9, 0.25, 1) both;
+}
+
+.upsell__close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.upsell__close:hover:not(:disabled) {
+  color: var(--text-h);
+}
+
+.upsell__badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--purple-400), var(--purple-700));
+  color: white;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.upsell__card h3 {
+  margin: 14px 0 8px;
+  font-size: 1.35rem;
+}
+
+.upsell__card p {
+  margin: 0 0 14px;
+  font-size: 0.9rem;
+}
+
+.upsell__price {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.upsell__price strong {
+  font-family: var(--heading);
+  font-size: 1.8rem;
+  color: var(--text-h);
+}
+
+.upsell__price s {
+  color: var(--text-dim);
+}
+
+.upsell__price span {
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(74, 222, 128, 0.35);
+  background: rgba(74, 222, 128, 0.1);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--success);
+}
+
+.upsell__card .upsell__total {
+  margin-bottom: 18px;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.upsell__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.upsell__actions .btn {
+  width: 100%;
+}
+
+.upsell__skip {
+  padding: 8px;
+  border: 0;
+  background: none;
+  color: var(--text-dim);
+  font: inherit;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.upsell__skip:hover:not(:disabled) {
+  color: var(--text-h);
+}
+
+.upsell button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+@keyframes upsellFade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes upsellPop {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .upsell,
+  .upsell__card {
+    animation: none;
+  }
+}
