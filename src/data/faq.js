@@ -11,10 +11,6 @@ export const FAQ = [
     a: 'Usually 5 to 7 working days to build and test it, then 2 to 3 working days for delivery. If a part is on backorder I will email you straight away with a new date rather than leaving you guessing.',
   },
   {
-    q: 'What is the build & test fee?',
-    a: 'It is a flat fee for the hands-on work on your PC: assembling every part, tidy cable management, a stress test under load before it ships, and careful packing for insured delivery. It is roughly three hours of work. The parts themselves are priced close to what they cost at UK retailers.',
-  },
-  {
     q: 'Are the FPS numbers real?',
     a: 'They are estimates built from published benchmark averages for each graphics card and processor, at the settings shown and with no ray tracing or upscaling. Real results usually land within about 10 to 15% depending on drivers, game patches and the scene.',
   },

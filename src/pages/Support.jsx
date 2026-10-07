@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom'
 import usePageMeta from '../utils/usePageMeta.js'
 import { CONTACT } from '../data/site.js'
-import { LABOUR } from '../data/parts.js'
-import { formatPrice } from '../utils/format.js'
 import { FAQ } from '../data/faq.js'
 import './Support.css'
 
@@ -21,41 +19,12 @@ export default function Support() {
           I will explain it.
         </p>
         <nav className="support__jump" aria-label="On this page">
-          <a href="#build-fee">Build fee</a>
           <a href="#delivery">Delivery</a>
           <a href="#warranty">Warranty</a>
           <a href="#returns">Returns</a>
           <a href="#faq">FAQ</a>
         </nav>
       </header>
-
-      <section id="build-fee" className="card support__section">
-        <h2>The build &amp; test fee</h2>
-        <div className="support__facts">
-          <div>
-            <strong>{formatPrice(LABOUR.price)}</strong>
-            <span>flat fee, once per PC</span>
-          </div>
-          <div>
-            <strong>~{LABOUR.hours} hours</strong>
-            <span>of hands-on work on your PC</span>
-          </div>
-          <div>
-            <strong>At cost</strong>
-            <span>parts priced close to UK retail</span>
-          </div>
-        </div>
-        <p>
-          Every PC is built by hand to order. The parts themselves are priced close to what they cost at UK
-          retailers, and the build &amp; test fee pays for the work that turns a box of parts into a PC you can rely
-          on. It is shown as its own line at checkout so you can see exactly where your money goes. It covers:
-        </p>
-        <ul>
-          {LABOUR.includes.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      </section>
 
       <section id="delivery" className="card support__section">
         <h2>Delivery</h2>
