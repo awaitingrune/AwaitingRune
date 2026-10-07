@@ -1,25 +1,9 @@
 import { useState } from 'react'
 import { GAMES, GENRES, RESOLUTIONS, findGame } from '../data/games.js'
 import { RATINGS, estimateFps, rateFps } from '../utils/fps.js'
+import { sweetSpot } from '../utils/performanceSummary.js'
 import FpsPanel from './FpsPanel.jsx'
 import './BuildInsights.css'
-
-// The highest resolution where most of our test games reach their target.
-function sweetSpot(build) {
-  const parts = { gpu: build.gpu, cpu: build.cpu }
-  const summary = RESOLUTIONS.map((r) => {
-    const hits = GAMES.filter((g) => {
-      const fps = estimateFps(g, r.key, parts)
-      return fps !== null && fps >= g.target
-    })
-    return { ...r, share: hits.length / GAMES.length }
-  })
-  const good = [...summary].reverse().find((s) => s.share >= 0.75)
-  if (good) return { label: good.label, text: `Comfortable at ${good.label}: most games reach their target frame rate.` }
-  const ok = [...summary].reverse().find((s) => s.share >= 0.4)
-  if (ok) return { label: ok.label, text: `Best at ${ok.label}. Heavier games will want lower settings above that.` }
-  return { label: '1080p', text: 'Best at 1080p, with some settings turned down in the heavier games.' }
-}
 
 export default function BuildPerformance({ build }) {
   const [gameId, setGameId] = useState('cyberpunk')

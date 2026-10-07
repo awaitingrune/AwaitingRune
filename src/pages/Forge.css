@@ -1,0 +1,610 @@
+/* Forge Your Rune: the stage-by-stage custom builder. */
+.forge-page {
+  padding: 56px 24px 100px;
+  scroll-margin-top: 80px;
+}
+
+.forge-head {
+  max-width: 640px;
+  margin-bottom: 28px;
+}
+
+.forge-head h1 {
+  margin: 8px 0 8px;
+}
+
+.forge-head p {
+  margin: 0;
+  font-family: var(--heading);
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  color: var(--purple-200);
+}
+
+/* ---- stage steps ---- */
+.forge-steps {
+  position: relative;
+  margin-bottom: 28px;
+  padding: 16px 18px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(19, 12, 34, 0.7);
+}
+
+.forge-steps__bar {
+  height: 4px;
+  margin-bottom: 14px;
+  border-radius: 999px;
+  background: var(--bg-3);
+  overflow: hidden;
+}
+
+.forge-steps__bar span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--purple-600), var(--purple-300));
+  box-shadow: 0 0 12px var(--purple-glow);
+  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.forge-steps ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.forge-steps__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 4px;
+  border: 0;
+  background: none;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.forge-steps__btn:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.forge-steps__btn:not(:disabled):hover {
+  color: var(--text-h);
+}
+
+.forge-steps__dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  font-size: 0.68rem;
+  font-weight: 700;
+  transition: all 0.25s ease;
+}
+
+.forge-steps__btn.is-done .forge-steps__dot {
+  background: var(--purple-500);
+  border-color: var(--purple-400);
+  color: white;
+}
+
+.forge-steps__btn.is-current {
+  color: var(--text-h);
+}
+
+.forge-steps__btn.is-current .forge-steps__dot {
+  border-color: var(--purple-300);
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.28);
+}
+
+/* ---- wizard layout ---- */
+.forge-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  align-items: start;
+}
+
+.forge-stage {
+  padding: 30px;
+  min-width: 0;
+}
+
+.forge-stage__head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.forge-stage__n {
+  font-family: var(--heading);
+  font-size: 2.4rem;
+  line-height: 1;
+  color: var(--purple-400);
+}
+
+.forge-stage__head h2 {
+  margin: 0;
+}
+
+.forge-stage__plain {
+  margin: 2px 0 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.forge-stage__hint {
+  margin: 14px 0 22px;
+  font-size: 0.95rem;
+}
+
+.forge-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 12px;
+}
+
+.forge-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.forge-tag {
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: var(--purple-200);
+  background: rgba(168, 85, 247, 0.1);
+}
+
+.forge-tag.is-warn {
+  color: var(--warning);
+  border-color: rgba(251, 191, 36, 0.4);
+  background: rgba(251, 191, 36, 0.08);
+}
+
+.forge-stage__nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.forge-stage__tip,
+.forge-stage__block {
+  margin: 12px 0 0;
+  font-size: 0.8rem;
+  text-align: right;
+}
+
+.forge-stage__block {
+  color: var(--error);
+}
+
+/* ---- the Rune so far ---- */
+.forge-rune {
+  position: sticky;
+  top: 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px 20px;
+  max-height: calc(100svh - 116px);
+  overflow-y: auto;
+  background: radial-gradient(80% 50% at 50% 0%, rgba(124, 58, 237, 0.2), transparent 70%),
+    linear-gradient(180deg, var(--bg-2), var(--bg-1));
+}
+
+.forge-rune__tower {
+  width: 150px;
+  margin: 0 auto;
+}
+
+.forge-rune__summary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.forge-rune__total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.forge-rune__total span {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.forge-rune__total strong {
+  font-family: var(--heading);
+  font-size: 1.7rem;
+  color: var(--text-h);
+  animation: forgePop 0.35s ease;
+}
+
+.forge-rune__details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.forge-rune__line {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.forge-rune__matched {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--border-strong);
+  font-size: 0.74rem;
+  color: var(--text-dim);
+}
+
+.forge-rune__matched-title {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--purple-300);
+}
+
+.forge-rune__verdict {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--success);
+}
+
+.forge-rune__verdict.is-bad {
+  color: var(--error);
+}
+
+/* ---- the reveal ---- */
+.reveal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.reveal__kicker {
+  margin: 0;
+  font-family: var(--heading);
+  font-size: 0.8rem;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--purple-300);
+  animation: revealRise 0.6s ease both;
+}
+
+.reveal__title {
+  margin: 10px 0 24px;
+  font-size: clamp(2rem, 1.4rem + 3vw, 3.4rem);
+  letter-spacing: 1px;
+  text-shadow: 0 0 40px var(--purple-glow);
+  animation: revealTitle 1.1s cubic-bezier(0.2, 0.9, 0.25, 1) 0.15s both;
+}
+
+.reveal__stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 28px 16px 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-strong);
+  background: radial-gradient(60% 70% at 50% 45%, rgba(124, 58, 237, 0.34), transparent 75%), var(--bg-1);
+  animation: revealRise 0.8s ease 0.35s both;
+}
+
+.reveal__tower {
+  width: min(300px, 70%);
+  margin-top: 6px;
+}
+
+.reveal__caption {
+  margin: 8px 0 0;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+
+.reveal__specs {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.reveal__specs li {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-1);
+  text-align: left;
+  animation: revealRise 0.6s ease both;
+  animation-delay: calc(0.7s + var(--i) * 0.12s);
+}
+
+.reveal__specs li span {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--purple-300);
+}
+
+.reveal__specs li strong {
+  font-size: 0.92rem;
+  color: var(--text-h);
+}
+
+.reveal__perf {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 14px;
+  margin-top: 26px;
+  animation: revealRise 0.6s ease 1.5s both;
+}
+
+.reveal__perf-label {
+  width: 100%;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.reveal__perf strong {
+  font-family: var(--heading);
+  font-size: 1.2rem;
+  color: var(--text-h);
+}
+
+.stars {
+  display: inline-flex;
+  gap: 3px;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.stars span {
+  color: var(--bg-3);
+}
+
+.stars span.is-on {
+  color: #fbbf24;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+}
+
+.reveal__price {
+  margin-top: 18px;
+  font-family: var(--heading);
+  font-size: clamp(2.4rem, 1.6rem + 3vw, 3.6rem);
+  color: var(--text-h);
+  animation: revealRise 0.6s ease 1.7s both;
+}
+
+.reveal__cta {
+  margin-top: 18px;
+  padding: 16px 40px;
+  font-size: 1.05rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  box-shadow: 0 0 40px -6px var(--purple-glow);
+  animation: revealRise 0.6s ease 1.9s both;
+}
+
+.reveal__note {
+  margin: 10px 0 0;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+
+.reveal__links {
+  display: flex;
+  gap: 24px;
+  margin-top: 18px;
+}
+
+.reveal__link {
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--purple-300);
+  cursor: pointer;
+}
+
+.reveal__link:hover {
+  color: var(--purple-200);
+}
+
+.reveal__more {
+  width: 100%;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+
+.reveal__details {
+  padding: 16px 20px;
+}
+
+.reveal__details summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.reveal__details summary small {
+  font-weight: 500;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.reveal__details > p {
+  margin: 12px 0;
+  font-size: 0.88rem;
+}
+
+.reveal__details > .insight {
+  margin-top: 14px;
+}
+
+.reveal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.reveal__field select {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-0);
+  color: var(--text-h);
+  font-size: 0.88rem;
+}
+
+@keyframes forgePop {
+  from {
+    opacity: 0.4;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes revealRise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@keyframes revealTitle {
+  from {
+    opacity: 0;
+    letter-spacing: 12px;
+    filter: blur(8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal *,
+  .forge-rune__total strong {
+    animation: none !important;
+  }
+}
+
+/* ---- responsive ---- */
+@media (max-width: 980px) {
+  .forge-layout {
+    grid-template-columns: 1fr;
+  }
+
+  /* On phones the Rune panel becomes a compact strip above the options. */
+  .forge-rune {
+    position: static;
+    order: -1;
+    max-height: none;
+    overflow: visible;
+    padding: 16px;
+  }
+
+  .forge-rune__tower,
+  .forge-rune__details {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .forge-page {
+    padding-top: 40px;
+  }
+
+  .forge-stage {
+    padding: 22px 16px;
+  }
+
+  .forge-steps ol {
+    grid-template-columns: repeat(7, auto);
+    justify-content: space-between;
+  }
+
+  .forge-steps__label {
+    display: none;
+  }
+
+  .forge-steps__btn.is-current .forge-steps__label {
+    display: inline;
+  }
+
+  .forge-steps__btn.is-current {
+    grid-column: auto;
+  }
+
+  .reveal__specs {
+    grid-template-columns: 1fr;
+  }
+
+  .reveal__cta {
+    width: 100%;
+    padding: 16px 20px;
+  }
+}

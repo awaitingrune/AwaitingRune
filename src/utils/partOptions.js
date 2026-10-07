@@ -11,7 +11,7 @@ export function specLine(key, part) {
     case 'motherboard':
       return `${part.socket} · ${part.ramType} · ${part.formFactor} · up to ${part.maxRamGB}GB`
     case 'ram':
-      return `${part.type} · ${part.capacityGB}GB`
+      return `${part.type}${part.speedMTs ? '-' + part.speedMTs : ''} · ${part.capacityGB}GB`
     case 'gpu':
       return `${part.vramGB}GB VRAM · ${part.tdp}W · ${part.lengthMm}mm long`
     case 'storage':

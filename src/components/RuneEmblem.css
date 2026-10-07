@@ -1,0 +1,127 @@
+.rune-emblem {
+  --p: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.rune-emblem__stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+.rune-emblem__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(168, 85, 247, calc(var(--p) * 0.4)), transparent 75%);
+  transition: background 0.6s ease;
+  pointer-events: none;
+}
+
+.rune-emblem__logo {
+  position: relative;
+  filter: grayscale(calc(1 - var(--p))) brightness(calc(0.55 + var(--p) * 0.55))
+    drop-shadow(0 0 calc(var(--p) * 22px) rgba(168, 85, 247, 0.75));
+  transition: filter 0.7s ease;
+}
+
+.rune-emblem__status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--heading);
+  font-size: 0.82rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--purple-200);
+}
+
+.rune-emblem__status span {
+  animation: runeStatus 0.5s ease both;
+}
+
+.rune-emblem__pips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 8px;
+}
+
+.rune-emblem__pips li {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  opacity: 0.45;
+  transition: all 0.4s ease;
+}
+
+.rune-emblem__pips li.is-done {
+  opacity: 1;
+  border-color: var(--purple-400);
+  background: rgba(168, 85, 247, 0.18);
+  color: var(--purple-100);
+  box-shadow: 0 0 14px -2px var(--purple-glow);
+}
+
+.rune-emblem.is-complete .rune-emblem__logo {
+  animation: runeBurst 1.2s ease both;
+}
+
+.rune-emblem.is-complete .rune-emblem__ring {
+  animation: runeRing 1.6s ease-out both;
+  background: radial-gradient(closest-side, rgba(168, 85, 247, 0.55), transparent 75%);
+}
+
+@keyframes runeStatus {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+}
+
+@keyframes runeBurst {
+  0% {
+    transform: scale(0.9);
+  }
+  45% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes runeRing {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.5);
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rune-emblem__logo,
+  .rune-emblem__ring,
+  .rune-emblem__status span {
+    animation: none;
+    transition: none;
+  }
+}
