@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import NavBar from './components/NavBar.jsx'
 import Footer from './components/Footer.jsx'
+import TrustStrip from './components/TrustStrip.jsx'
 import QuizProvider from './components/QuizProvider.jsx'
 import CustomizeProvider from './components/CustomizeProvider.jsx'
 import Landing from './pages/Landing.jsx'
@@ -44,6 +45,7 @@ export default function App() {
           <Route path="/order-confirmed" element={<OrderConfirmed />} />
         </Routes>
       </main>
+      <TrustStrip />
       <Footer />
       </QuizProvider>
       </CustomizeProvider>

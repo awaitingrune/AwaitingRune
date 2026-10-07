@@ -1,25 +1,7 @@
 import { Link } from 'react-router-dom'
 import { CONTACT } from '../data/site.js'
+import { FAQ } from '../data/faq.js'
 import './Support.css'
-
-const FAQ = [
-  {
-    q: 'How long until my PC arrives?',
-    a: 'Usually 5 to 7 working days to build and test it, then 2 to 3 working days for delivery. If a part is on backorder I will email you straight away with a new date rather than leaving you guessing.',
-  },
-  {
-    q: 'Can I change my order after paying?',
-    a: 'Yes, as long as I have not started building it. Email or ring me and I will swap parts or cancel for a full refund.',
-  },
-  {
-    q: 'What if I upgrade something myself later?',
-    a: 'Go for it. Adding RAM, storage or a new graphics card does not void the warranty on the rest of the PC.',
-  },
-  {
-    q: 'Who do I contact if something goes wrong?',
-    a: `Me, directly. Email ${CONTACT.email} or ring ${CONTACT.phone}. There is no ticket queue.`,
-  },
-]
 
 export default function Support() {
   return (

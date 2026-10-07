@@ -35,6 +35,7 @@ export default function QuizProvider({ children }) {
   const { pathname } = useLocation()
   const [quizOpen, setQuizOpen] = useState(false)
   const [promptOpen, setPromptOpen] = useState(false)
+  const [quizUse, setQuizUse] = useState(null)
 
   const seconds = useRef(0)
   const seen = useRef(readSeen())
@@ -49,11 +50,17 @@ export default function QuizProvider({ children }) {
     writeSeen()
   }, [])
 
-  const openQuiz = useCallback(() => {
-    markSeen()
-    setPromptOpen(false)
-    setQuizOpen(true)
-  }, [markSeen])
+  // Optionally starts the quiz with what the PC is for already answered.
+  // (Buttons pass their click event here, so only a string counts.)
+  const openQuiz = useCallback(
+    (use) => {
+      markSeen()
+      setPromptOpen(false)
+      setQuizUse(typeof use === 'string' ? use : null)
+      setQuizOpen(true)
+    },
+    [markSeen]
+  )
 
   const closeQuiz = useCallback(() => setQuizOpen(false), [])
 
@@ -103,7 +110,7 @@ export default function QuizProvider({ children }) {
         </aside>
       )}
 
-      {quizOpen && <QuizModal onClose={closeQuiz} />}
+      {quizOpen && <QuizModal onClose={closeQuiz} initialUse={quizUse} />}
     </QuizContext.Provider>
   )
 }

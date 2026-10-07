@@ -116,11 +116,12 @@ function ResultCard({ rig, reasons, badge, note, games, resKey, use, big, onBuy,
   )
 }
 
-export default function QuizModal({ onClose }) {
+export default function QuizModal({ onClose, initialUse = null }) {
   const { openCustomize } = useCustomize()
   const panelRef = useRef(null)
-  const [answers, setAnswers] = useState(EMPTY)
-  const [stepIndex, setStepIndex] = useState(0)
+  const [answers, setAnswers] = useState(() => (initialUse ? { ...EMPTY, use: initialUse } : EMPTY))
+  // Starting with the use already chosen skips straight to the next question.
+  const [stepIndex, setStepIndex] = useState(initialUse ? 1 : 0)
   const [finished, setFinished] = useState(false)
   const [buyState, setBuyState] = useState({ id: null, status: 'idle', error: null })
 
