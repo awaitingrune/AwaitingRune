@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import usePageMeta from '../utils/usePageMeta.js'
 import './About.css'
 
 const INITIAL_FORM = { name: '', email: '', message: '' }
@@ -10,6 +11,10 @@ function encodeForm(data) {
 }
 
 export default function About() {
+  usePageMeta({
+    title: "Meet the Rune Smith | About & Contact | AwaitingRune",
+    description: "I have been building PCs for years and love every one. Ask me anything about a build, a part or an order, any time of day.",
+  })
   const [form, setForm] = useState(INITIAL_FORM)
   const [submitted, setSubmitted] = useState(false)
 

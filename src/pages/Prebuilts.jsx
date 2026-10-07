@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import usePageMeta from '../utils/usePageMeta.js'
 import { CATEGORIES } from '../data/parts.js'
 import { GAMES, GENRES, RESOLUTIONS, findGame } from '../data/games.js'
 import { PREBUILTS, PREBUILT_CATEGORIES, presetInCategory, resolveBuild } from '../data/prebuilts.js'
@@ -20,6 +21,10 @@ const BASE_SORTS = [
 ]
 
 export default function Prebuilts() {
+  usePageMeta({
+    title: "The Rune Series | Prebuilt Gaming & Creator PCs | AwaitingRune",
+    description: "We have a rune for everything. Browse prebuilt gaming and workstation PCs with FPS estimates, then customise any part before you buy.",
+  })
   const { openCustomize } = useCustomize()
   const [category, setCategory] = useState('all')
   const [sort, setSort] = useState('default')

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import usePageMeta from '../utils/usePageMeta.js'
 import { CATEGORIES, PARTS, findPart } from '../data/parts.js'
 import { evaluateBuild } from '../utils/compatibility.js'
 import { startCheckout } from '../utils/checkout.js'
@@ -143,6 +144,10 @@ function PerformanceLine({ build }) {
 }
 
 export default function CustomBuild() {
+  usePageMeta({
+    title: "Forge Your Rune | Build Your Own Custom PC | AwaitingRune",
+    description: "Choose your Core, Power, Heart, Memory, Storage, Armour and Aura. Live compatibility checks, live pricing and FPS estimates, then awaken your build.",
+  })
   const [choices, setChoices] = useState(EMPTY)
   const [psuChoice, setPsuChoice] = useState(null)
   const [stageIndex, setStageIndex] = useState(0)

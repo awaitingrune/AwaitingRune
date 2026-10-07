@@ -1,7 +1,13 @@
 import { Link } from 'react-router-dom'
+import usePageMeta from '../utils/usePageMeta.js'
 import './OrderConfirmed.css'
 
 export default function OrderConfirmed() {
+  usePageMeta({
+    title: "Your Rune Is on Its Way | AwaitingRune",
+    description: "Your order has been received.",
+    noindex: true,
+  })
   const sessionId = new URLSearchParams(window.location.search).get('session_id')
 
   return (

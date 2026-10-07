@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import usePageMeta from '../utils/usePageMeta.js'
 import Logo from '../components/Logo.jsx'
 import FractureLines from '../components/FractureLines.jsx'
 import FindYourRune from '../components/home/FindYourRune.jsx'
@@ -20,6 +21,10 @@ const STEPS = [
 ]
 
 export default function Landing() {
+  usePageMeta({
+    title: "AwaitingRune | Custom Gaming & Editing PCs, Forged in the UK",
+    description: "Hand-built gaming and editing PCs, forged to order in the UK. Pick a Rune from the series or forge your own, with a 12 month warranty and tracked delivery.",
+  })
   return (
     <div className="landing">
       <section className="hero">

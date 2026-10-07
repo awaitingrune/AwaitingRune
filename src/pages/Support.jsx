@@ -1,9 +1,14 @@
 import { Link } from 'react-router-dom'
+import usePageMeta from '../utils/usePageMeta.js'
 import { CONTACT } from '../data/site.js'
 import { FAQ } from '../data/faq.js'
 import './Support.css'
 
 export default function Support() {
+  usePageMeta({
+    title: "The Rune Promise | Warranty, Returns & Delivery | AwaitingRune",
+    description: "A 12 month warranty, fair returns and tracked UK delivery. Everything about what happens after you order your PC.",
+  })
   return (
     <div className="support container">
       <header className="support__head">
