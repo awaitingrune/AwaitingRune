@@ -78,6 +78,7 @@ export const PARTS = {
   psu: [
     { id: 'psu-550', name: 'Corsair CV550 550W 80+ Bronze', wattage: 550, price: 55 },
     { id: 'psu-650', name: 'Corsair RM650x 650W 80+ Gold', wattage: 650, price: 99 },
+    { id: 'psu-750', name: 'Corsair RM750x 750W 80+ Gold', wattage: 750, price: 119 },
     { id: 'psu-850', name: 'Corsair RM850x 850W 80+ Gold', wattage: 850, price: 139 },
     { id: 'psu-1000', name: 'Corsair HX1000 1000W 80+ Platinum', wattage: 1000, price: 219 },
     { id: 'psu-1200', name: 'Corsair HX1200 1200W 80+ Platinum', wattage: 1200, price: 249 },

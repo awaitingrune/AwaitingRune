@@ -53,7 +53,7 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(var(--steps, 8), 1fr);
   gap: 6px;
 }
 
@@ -104,6 +104,16 @@
 
 .forge-steps__btn.is-current {
   color: var(--text-h);
+}
+
+.forge-steps__btn.has-clash .forge-steps__dot {
+  background: var(--error);
+  border-color: var(--error);
+  color: #450a0a;
+}
+
+.forge-steps__btn.has-clash {
+  color: var(--error);
 }
 
 .forge-steps__btn.is-current .forge-steps__dot {
@@ -582,21 +592,22 @@
     padding: 22px 16px;
   }
 
-  .forge-steps ol {
-    grid-template-columns: repeat(7, auto);
-    justify-content: space-between;
+  .forge-steps {
+    padding: 14px 12px 10px;
   }
 
+  .forge-steps ol {
+    grid-template-columns: repeat(var(--steps, 8), 1fr);
+    gap: 2px;
+  }
+
+  /* The stage title below says where you are, so the dots go label-free. */
   .forge-steps__label {
     display: none;
   }
 
-  .forge-steps__btn.is-current .forge-steps__label {
-    display: inline;
-  }
-
-  .forge-steps__btn.is-current {
-    grid-column: auto;
+  .forge-steps__btn {
+    padding: 4px 0;
   }
 
   .reveal__specs {
@@ -607,4 +618,19 @@
     width: 100%;
     padding: 16px 20px;
   }
+}
+
+/* compatibility labels on part cards */
+.part-card__reason {
+  font-size: 0.74rem;
+  line-height: 1.35;
+  color: var(--error);
+}
+
+.part-card__flag.is-ok {
+  color: var(--success);
+}
+
+.forge-options .part-card:has(.part-card__flag) {
+  padding-top: 32px;
 }

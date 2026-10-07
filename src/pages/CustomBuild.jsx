@@ -3,8 +3,8 @@ import { CATEGORIES, PARTS, findPart } from '../data/parts.js'
 import { evaluateBuild } from '../utils/compatibility.js'
 import { startCheckout } from '../utils/checkout.js'
 import { formatPrice } from '../utils/format.js'
-import { isOptionIncompatible, shortName, specLine } from '../utils/partOptions.js'
-import { choiceClashes, pickBoard, pickPsu } from '../utils/autoMatch.js'
+import { shortName, specLine } from '../utils/partOptions.js'
+import { clashReason, pickPsu } from '../utils/autoMatch.js'
 import { performanceSummary, sweetSpot } from '../utils/performanceSummary.js'
 import PCTower from '../components/PCTower.jsx'
 import RuneEmblem from '../components/RuneEmblem.jsx'
@@ -15,7 +15,7 @@ import './Forge.css'
 
 // The six things people actually care about. Each has a branded name, but the
 // plain-English part name sits right underneath so nobody has to guess what
-// they are buying. The motherboard and power supply are matched for them.
+// they are buying. Only the power supply is picked for them.
 const STAGES = [
   {
     key: 'cpu',
@@ -38,8 +38,18 @@ const STAGES = [
     pip: 'uruz',
   },
   {
-    key: 'ram',
+    key: 'motherboard',
     n: '03',
+    short: 'Heart',
+    title: 'Choose Your Heartrune',
+    plain: 'Motherboard',
+    hint: 'The heart of your PC. Everything plugs into it, so it has to match your Core and the Memory and Armour you pick next.',
+    awakened: 'Heart awakened',
+    pip: 'fehu',
+  },
+  {
+    key: 'ram',
+    n: '04',
     short: 'Memory',
     title: 'Choose Your Memory',
     plain: 'Memory (RAM)',
@@ -49,7 +59,7 @@ const STAGES = [
   },
   {
     key: 'storage',
-    n: '04',
+    n: '05',
     short: 'Storage',
     title: 'Choose Your Storage',
     plain: 'Storage (SSD)',
@@ -59,7 +69,7 @@ const STAGES = [
   },
   {
     key: 'case',
-    n: '05',
+    n: '06',
     short: 'Armour',
     title: 'Choose Your Armour',
     plain: 'Case',
@@ -69,7 +79,7 @@ const STAGES = [
   },
   {
     key: 'cooler',
-    n: '06',
+    n: '07',
     short: 'Aura',
     title: 'Choose Your Aura',
     plain: 'Cooling & lighting',
@@ -93,6 +103,10 @@ function optionTags(key, part, chosen) {
   if (key === 'cpu') {
     if (/x3d/.test(part.id)) tags.push({ text: 'Top for gaming' })
     if (part.cores >= 12) tags.push({ text: 'Great for creating' })
+  }
+  if (key === 'motherboard') {
+    tags.push({ text: part.formFactor === 'mATX' ? 'Compact (mATX)' : 'Full size (ATX)' })
+    if (part.quiet) tags.push({ text: 'No RGB' })
   }
   if (key === 'ram' && /RGB/.test(part.name)) tags.push({ text: 'RGB lighting' })
   if (key === 'case' && part.quiet) tags.push({ text: 'Sound-damped' })
@@ -130,7 +144,7 @@ function PerformanceLine({ build }) {
 
 export default function CustomBuild() {
   const [choices, setChoices] = useState(EMPTY)
-  const [overrides, setOverrides] = useState({ motherboard: null, psu: null })
+  const [psuChoice, setPsuChoice] = useState(null)
   const [stageIndex, setStageIndex] = useState(0)
   const [lastKey, setLastKey] = useState(null)
   const [checkout, setCheckout] = useState({ status: 'idle', error: null })
@@ -141,22 +155,12 @@ export default function CustomBuild() {
     [choices]
   )
 
-  // Motherboard and power supply follow from the six choices.
-  const auto = useMemo(
-    () => ({
-      motherboard: chosen.cpu && chosen.ram && chosen.case ? pickBoard(chosen) : null,
-      psu: chosen.cpu && chosen.gpu ? pickPsu(chosen) : null,
-    }),
-    [chosen]
-  )
+  // The power supply is sized from the CPU and graphics card, with headroom.
+  const autoPsu = useMemo(() => (chosen.cpu && chosen.gpu ? pickPsu(chosen) : null), [chosen])
 
   const build = useMemo(
-    () => ({
-      ...chosen,
-      motherboard: findPart('motherboard', overrides.motherboard) ?? auto.motherboard ?? null,
-      psu: findPart('psu', overrides.psu) ?? auto.psu ?? null,
-    }),
-    [chosen, auto, overrides]
+    () => ({ ...chosen, psu: findPart('psu', psuChoice) ?? autoPsu ?? null }),
+    [chosen, autoPsu, psuChoice]
   )
 
   const evaluation = useMemo(() => evaluateBuild(build), [build])
@@ -175,12 +179,15 @@ export default function CustomBuild() {
       ? 'Ready to complete your Rune'
       : (lastStage?.awakened ?? 'A Rune awaits…')
 
+  // Anything chosen earlier that no longer works with a later choice.
+  const clashes = STAGES.filter((st) => chosen[st.key])
+    .map((st) => ({ stage: st, reason: clashReason(st.key, chosen[st.key], { ...chosen, [st.key]: null }) }))
+    .filter((c) => c.reason)
+  const clashKeys = new Set(clashes.map((c) => c.stage.key))
   const firstProblem = evaluation.issues.find((i) => i.level === 'error')
-  const blockReason = firstProblem
-    ? firstProblem.message
-    : allChosen && !build.motherboard
-      ? 'No motherboard in our range works with this CPU, memory and case together. Try changing one of them.'
-      : null
+  const blockReason = clashes.length
+    ? `${clashes[0].stage.short}: ${clashes[0].reason}`
+    : (firstProblem?.message ?? null)
 
   // Bring the top of the flow back into view whenever the stage changes.
   const mounted = useRef(false)
@@ -194,16 +201,16 @@ export default function CustomBuild() {
 
   function choose(key, id) {
     setChoices((prev) => ({ ...prev, [key]: id }))
-    // A new choice can change which board and power supply fit, so go back
-    // to the automatic match rather than keep a stale manual pick.
-    setOverrides({ motherboard: null, psu: null })
+    // A new choice can change what power supply is right, so go back to the
+    // automatic pick rather than keep a stale manual one.
+    setPsuChoice(null)
     setLastKey(key)
     setCheckout({ status: 'idle', error: null })
   }
 
   function restart() {
     setChoices(EMPTY)
-    setOverrides({ motherboard: null, psu: null })
+    setPsuChoice(null)
     setLastKey(null)
     setStageIndex(0)
     setCheckout({ status: 'idle', error: null })
@@ -227,6 +234,16 @@ export default function CustomBuild() {
     }
   }
 
+  // The options for the current stage, each with the reason it does not work
+  // (if it does not). Compatible motherboards are listed first.
+  const options = stage
+    ? PARTS[stage.key]
+        .map((option) => ({ option, reason: clashReason(stage.key, option, chosen) }))
+        .sort((a, b) => (stage.key === 'motherboard' ? Number(Boolean(a.reason)) - Number(Boolean(b.reason)) : 0))
+    : []
+
+  const psuLoad = build.psu ? Math.round((evaluation.estimatedDrawW / build.psu.wattage) * 100) : 0
+
   const pips = STAGES.map((s) => ({ key: s.key, rune: s.pip, label: s.short, done: Boolean(chosen[s.key]) }))
   const spot = chosen.cpu && chosen.gpu ? sweetSpot(build) : null
 
@@ -242,16 +259,16 @@ export default function CustomBuild() {
         <div className="forge-steps__bar" aria-hidden="true">
           <span style={{ width: `${onReveal ? 100 : (stageIndex / STAGES.length) * 100}%` }} />
         </div>
-        <ol>
+        <ol style={{ '--steps': STAGES.length + 1 }}>
           {STAGES.map((s, i) => (
             <li key={s.key}>
               <button
                 type="button"
-                className={`forge-steps__btn ${i === stageIndex ? 'is-current' : ''} ${chosen[s.key] ? 'is-done' : ''}`}
+                className={`forge-steps__btn ${i === stageIndex ? 'is-current' : ''} ${chosen[s.key] ? 'is-done' : ''} ${clashKeys.has(s.key) ? 'has-clash' : ''}`}
                 aria-current={i === stageIndex ? 'step' : undefined}
                 onClick={() => goTo(i)}
               >
-                <span className="forge-steps__dot">{chosen[s.key] ? '✓' : s.n}</span>
+                <span className="forge-steps__dot">{clashKeys.has(s.key) ? '!' : chosen[s.key] ? '✓' : s.n}</span>
                 <span className="forge-steps__label">{s.short}</span>
               </button>
             </li>
@@ -263,7 +280,7 @@ export default function CustomBuild() {
               disabled={!canReveal}
               onClick={() => goTo(LAST)}
             >
-              <span className="forge-steps__dot">{canReveal ? '✓' : '07'}</span>
+              <span className="forge-steps__dot">{canReveal ? '✓' : String(STAGES.length + 1).padStart(2, '0')}</span>
               <span className="forge-steps__label">Complete</span>
             </button>
           </li>
@@ -283,9 +300,9 @@ export default function CustomBuild() {
             <p className="forge-stage__hint">{stage.hint}</p>
 
             <div className="forge-options">
-              {PARTS[stage.key].map((option) => {
+              {options.map(({ option, reason }) => {
                 const isSelected = choices[stage.key] === option.id
-                const clash = !isSelected && choiceClashes(stage.key, option, chosen)
+                const clash = Boolean(reason)
                 const tags = optionTags(stage.key, option, chosen)
                 return (
                   <button
@@ -297,6 +314,7 @@ export default function CustomBuild() {
                   >
                     <span className="part-card__name">{option.name}</span>
                     <span className="part-card__specs">{specLine(stage.key, option)}</span>
+                    {clash && <span className="part-card__reason">{reason}</span>}
                     {tags.length > 0 && (
                       <span className="forge-tags">
                         {tags.map((t) => (
@@ -307,7 +325,11 @@ export default function CustomBuild() {
                       </span>
                     )}
                     <span className="part-card__price">{formatPrice(option.price)}</span>
-                    {clash && <span className="part-card__flag">Doesn&rsquo;t fit</span>}
+                    {clash ? (
+                      <span className="part-card__flag">Not compatible</span>
+                    ) : (
+                      stage.key === 'motherboard' && <span className="part-card__flag is-ok">&#10003; Compatible</span>
+                    )}
                   </button>
                 )
               })}
@@ -360,11 +382,11 @@ export default function CustomBuild() {
                     <span>{spot.label} gaming</span>
                   </div>
                 )}
-                {(build.motherboard || build.psu) && (
+                {build.psu && (
                   <div className="forge-rune__matched">
-                    <span className="forge-rune__matched-title">Matched for you</span>
-                    {build.motherboard && <span>{build.motherboard.name}</span>}
-                    {build.psu && <span>{build.psu.name}</span>}
+                    <span className="forge-rune__matched-title">Power supply, picked for you</span>
+                    <span>{build.psu.name}</span>
+                    <span>About {psuLoad}% load at full tilt, so there is room to grow</span>
                   </div>
                 )}
                 <p className={`forge-rune__verdict ${blockReason ? 'is-bad' : ''}`}>
@@ -399,6 +421,7 @@ export default function CustomBuild() {
             {[
               ['Core', shortName(build.cpu.name)],
               ['Power', shortName(build.gpu.name)],
+              ['Heart', build.motherboard.name],
               ['Memory', `${build.ram.capacityGB}GB ${build.ram.type}`],
               ['Storage', storageLabel(build.storage)],
               ['Armour', build.case.name],
@@ -439,44 +462,36 @@ export default function CustomBuild() {
           <div className="reveal__more">
             <details className="card reveal__details">
               <summary>
-                Matched for you: motherboard &amp; power supply
+                Power supply, picked for you
                 <small>
-                  {build.motherboard ? shortName(build.motherboard.name) : '—'} · {build.psu ? `${build.psu.wattage}W` : '—'}
+                  {build.psu.wattage}W · about {psuLoad}% load at full tilt
                 </small>
               </summary>
               <p>
-                We pick a compatible motherboard and a power supply with proper headroom from your choices. Change
-                either one here if you have a preference.
+                We size the power supply for your CPU and graphics card with plenty of headroom, so it runs at roughly
+                50&ndash;65% load. That leaves room for power spikes and a future upgrade, and keeps the fan quiet. Pick
+                a different one here if you prefer.
               </p>
-              {['motherboard', 'psu'].map((key) => {
-                const current = build[key]
-                return (
-                  <label key={key} className="reveal__field">
-                    <span>{key === 'motherboard' ? 'Motherboard' : 'Power supply'}</span>
-                    <select
-                      value={current.id}
-                      onChange={(e) => {
-                        setOverrides((prev) => ({ ...prev, [key]: e.target.value }))
-                        setCheckout({ status: 'idle', error: null })
-                      }}
-                    >
-                      {PARTS[key].map((opt) => {
-                        const clash = opt.id !== current.id && isOptionIncompatible(key, opt, build)
-                        return (
-                          <option key={opt.id} value={opt.id}>
-                            {opt.name} · {formatPrice(opt.price)}
-                            {key === 'motherboard' ? ` · ${opt.formFactor}` : ''}
-                            {clash ? ' · ⚠ incompatible' : ''}
-                          </option>
-                        )
-                      })}
-                    </select>
-                  </label>
-                )
-              })}
-              {(overrides.motherboard || overrides.psu) && (
-                <button type="button" className="btn" onClick={() => setOverrides({ motherboard: null, psu: null })}>
-                  Go back to the matched parts
+              <label className="reveal__field">
+                <span>Power supply</span>
+                <select
+                  value={build.psu.id}
+                  onChange={(e) => {
+                    setPsuChoice(e.target.value)
+                    setCheckout({ status: 'idle', error: null })
+                  }}
+                >
+                  {PARTS.psu.map((opt) => (
+                    <option key={opt.id} value={opt.id}>
+                      {opt.name} · {formatPrice(opt.price)}
+                      {opt.wattage < evaluation.recommendedW ? ' · ⚠ too small' : ''}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              {psuChoice && (
+                <button type="button" className="btn" onClick={() => setPsuChoice(null)}>
+                  Go back to the picked power supply
                 </button>
               )}
             </details>
