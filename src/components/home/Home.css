@@ -25,64 +25,13 @@
   gap: 20px;
 }
 
-/* ---- find your rune ---- */
-.find__grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
+/* ---- find your rune (the quiz, built into the page) ---- */
+.find__panel {
+  padding: 32px;
 }
 
-.find__tile {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-  padding: 26px 22px;
-  text-align: left;
-  font: inherit;
-  color: var(--text);
-  cursor: pointer;
-  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.find__tile:hover {
-  transform: translateY(-3px);
-  border-color: var(--purple-400);
-  box-shadow: 0 16px 40px -20px var(--purple-glow);
-}
-
-.find__rune {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 52px;
-  height: 52px;
-  margin-bottom: 6px;
-  border-radius: 12px;
-  border: 1px solid var(--border-strong);
-  background: rgba(168, 85, 247, 0.12);
-  color: var(--purple-200);
-  box-shadow: 0 0 18px -6px var(--purple-glow);
-}
-
-.find__tile strong {
-  font-family: var(--heading);
-  font-size: 1.25rem;
-  letter-spacing: 0.5px;
-  color: var(--text-h);
-}
-
-.find__body {
-  flex: 1;
-  font-size: 0.88rem;
-  color: var(--text-dim);
-}
-
-.find__go {
-  margin-top: 6px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--purple-300);
+.quizflow {
+  scroll-margin-top: 100px;
 }
 
 /* ---- rune series ---- */
@@ -490,7 +439,6 @@
 
 /* ---- responsive ---- */
 @media (max-width: 1100px) {
-  .find__grid,
   .series-home__grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -559,7 +507,6 @@
 }
 
 @media (max-width: 560px) {
-  .find__grid,
   .series-home__grid,
   .built__grid,
   .why__pillars {
@@ -568,5 +515,9 @@
 
   .home-section {
     margin-bottom: 72px;
+  }
+
+  .find__panel {
+    padding: 20px 14px;
   }
 }
