@@ -15,8 +15,8 @@ export const USES = [
 
 export const BUDGETS = [
   { key: '1500', label: 'Up to £1,500', max: 1500 },
-  { key: '2500', label: 'Up to £2,500', max: 2500 },
-  { key: '3500', label: 'Up to £3,500', max: 3500 },
+  { key: '2750', label: 'Up to £2,750', max: 2750 },
+  { key: '3600', label: 'Up to £3,600', max: 3600 },
   { key: '5000', label: 'Up to £5,000', max: 5000 },
   { key: 'any', label: 'No real limit', max: Infinity },
 ]

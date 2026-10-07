@@ -13,9 +13,10 @@
 // Function that creates Stripe Checkout sessions can import the same
 // source of truth — the server never trusts a price sent by the client.
 
-// Added on top of the retail price of every part (5%). It covers payment fees,
-// returns and price movement between order and purchase.
-export const MARKUP = 0.05
+// Added on top of the retail price of every part (10%). It covers delivery of
+// parts to the workshop, payment fees, returns and price movement between order
+// and purchase. Change this one number to move every price on the site.
+export const MARKUP = 0.1
 
 // Charged once per PC. Roughly three hours of hands-on work at about £33/hour.
 export const LABOUR = {
@@ -114,11 +115,11 @@ export const PARTS = {
   ],
 }
 
-// The price a customer pays for each part: retail plus the small markup,
-// rounded to the nearest pound.
+// The price a customer pays for each part: retail plus the markup, rounded up
+// to the next pound.
 for (const list of Object.values(PARTS)) {
   for (const part of list) {
-    part.price = Math.round(part.retail * (1 + MARKUP))
+    part.price = Math.ceil(part.retail * (1 + MARKUP))
   }
 }
 
